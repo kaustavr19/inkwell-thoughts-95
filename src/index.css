@@ -2,95 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light theme - warm paper */
+    --background: 40 30% 97%;
+    --foreground: 220 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 40 25% 95%;
+    --card-foreground: 220 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 40 30% 97%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 60% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 220 15% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 40 15% 90%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 220 50% 50%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 220 60% 45%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* InkPad specific */
+    --ink-surface: 40 30% 97%;
+    --ink-pen-default: 220 15% 15%;
+    --toolbar-bg: 40 25% 95%;
+    --toolbar-border: 40 20% 85%;
+    --status-bg: 40 20% 92%;
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, sans-serif;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 15% 12%;
+    --foreground: 220 10% 90%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 15% 15%;
+    --card-foreground: 220 10% 90%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 15% 15%;
+    --popover-foreground: 220 10% 90%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 215 70% 60%;
+    --primary-foreground: 220 15% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 10% 85%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 15% 20%;
+    --muted-foreground: 220 10% 55%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 215 70% 60%;
+    --accent-foreground: 220 15% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 215 70% 60%;
+
+    /* InkPad specific */
+    --ink-surface: 220 15% 12%;
+    --ink-pen-default: 220 10% 85%;
+    --toolbar-bg: 220 15% 15%;
+    --toolbar-border: 220 15% 25%;
+    --status-bg: 220 15% 18%;
+  }
+
+  .nightlight {
+    --background: 35 40% 14%;
+    --foreground: 35 30% 85%;
+
+    --card: 35 35% 17%;
+    --card-foreground: 35 30% 85%;
+
+    --popover: 35 35% 17%;
+    --popover-foreground: 35 30% 85%;
+
+    --primary: 35 70% 55%;
+    --primary-foreground: 35 40% 10%;
+
+    --secondary: 35 30% 20%;
+    --secondary-foreground: 35 25% 80%;
+
+    --muted: 35 25% 22%;
+    --muted-foreground: 35 20% 55%;
+
+    --accent: 35 70% 55%;
+    --accent-foreground: 35 40% 10%;
+
+    --destructive: 15 60% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 25% 25%;
+    --input: 35 25% 25%;
+    --ring: 35 70% 55%;
+
+    /* InkPad specific */
+    --ink-surface: 35 40% 14%;
+    --ink-pen-default: 35 30% 80%;
+    --toolbar-bg: 35 35% 17%;
+    --toolbar-border: 35 25% 28%;
+    --status-bg: 35 30% 20%;
   }
 }
 
@@ -99,7 +128,203 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    font-family: var(--font-sans);
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  .inkpad-editor {
+    @apply w-full h-full outline-none resize-none;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: -0.01em;
+  }
+
+  .inkpad-preview {
+    @apply prose prose-neutral dark:prose-invert max-w-none;
+    font-family: var(--font-sans);
+  }
+
+  .inkpad-preview h1 {
+    @apply text-3xl font-bold mt-8 mb-4 first:mt-0;
+  }
+
+  .inkpad-preview h2 {
+    @apply text-2xl font-semibold mt-6 mb-3;
+  }
+
+  .inkpad-preview h3 {
+    @apply text-xl font-semibold mt-5 mb-2;
+  }
+
+  .inkpad-preview h4 {
+    @apply text-lg font-medium mt-4 mb-2;
+  }
+
+  .inkpad-preview p {
+    @apply my-4 leading-relaxed;
+  }
+
+  .inkpad-preview ul,
+  .inkpad-preview ol {
+    @apply my-4 pl-6;
+  }
+
+  .inkpad-preview li {
+    @apply my-1;
+  }
+
+  .inkpad-preview blockquote {
+    @apply border-l-4 border-primary/30 pl-4 italic my-4 text-muted-foreground;
+  }
+
+  .inkpad-preview code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .inkpad-preview pre {
+    @apply bg-muted p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  .inkpad-preview pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .inkpad-preview a {
+    @apply text-primary underline underline-offset-2;
+  }
+
+  .inkpad-preview hr {
+    @apply my-8 border-border;
+  }
+
+  .inkpad-preview img {
+    @apply rounded-lg max-w-full my-4;
+  }
+
+  .inkpad-preview input[type="checkbox"] {
+    @apply mr-2 accent-primary;
+  }
+
+  .slash-menu {
+    @apply bg-popover border border-border rounded-lg shadow-lg overflow-hidden;
+    min-width: 200px;
+  }
+
+  .slash-menu-item {
+    @apply px-3 py-2 cursor-pointer flex items-center gap-2 text-sm transition-colors;
+  }
+
+  .slash-menu-item:hover,
+  .slash-menu-item.active {
+    @apply bg-muted;
+  }
+
+  .slash-menu-item .icon {
+    @apply w-4 h-4 text-muted-foreground;
+  }
+
+  .slash-menu-item .label {
+    @apply text-foreground;
+  }
+
+  .slash-menu-item .shortcut {
+    @apply text-xs text-muted-foreground ml-auto;
+  }
+
+  .docked-toolbar {
+    @apply fixed bottom-6 left-1/2 -translate-x-1/2 z-50;
+    @apply bg-toolbar border border-toolbar-border rounded-2xl shadow-xl;
+    @apply flex items-center gap-1 p-2;
+  }
+
+  .toolbar-btn {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all;
+    @apply text-muted-foreground hover:text-foreground hover:bg-muted;
+  }
+
+  .toolbar-btn.active {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .toolbar-divider {
+    @apply w-px h-6 bg-border mx-1;
+  }
+
+  .color-chip {
+    @apply w-6 h-6 rounded-full border-2 border-transparent cursor-pointer transition-transform;
+  }
+
+  .color-chip:hover {
+    @apply scale-110;
+  }
+
+  .color-chip.active {
+    @apply border-foreground scale-110;
+  }
+
+  .size-btn {
+    @apply px-2 py-1 rounded text-xs font-medium transition-colors;
+    @apply text-muted-foreground hover:text-foreground;
+  }
+
+  .size-btn.active {
+    @apply bg-muted text-foreground;
+  }
+}
+
+@layer utilities {
+  .bg-toolbar {
+    background-color: hsl(var(--toolbar-bg));
+  }
+
+  .border-toolbar-border {
+    border-color: hsl(var(--toolbar-border));
+  }
+
+  .bg-status {
+    background-color: hsl(var(--status-bg));
+  }
+
+  .ink-surface {
+    background-color: hsl(var(--ink-surface));
+  }
+
+  .cursor-pen {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M12 19l7-7 3 3-7 7-3-3z'/%3E%3Cpath d='m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z'/%3E%3Cpath d='m2 2 7.586 7.586'/%3E%3Ccircle cx='11' cy='11' r='2'/%3E%3C/svg%3E") 2 22, crosshair;
+  }
+
+  .cursor-highlighter {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFC107' stroke-width='2'%3E%3Crect x='6' y='2' width='12' height='20' rx='2'/%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E") 12 22, crosshair;
+  }
+
+  .cursor-eraser {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21'/%3E%3Cpath d='M22 21H7'/%3E%3Cpath d='m5 11 9 9'/%3E%3C/svg%3E") 12 22, crosshair;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 3px;
   }
 }
