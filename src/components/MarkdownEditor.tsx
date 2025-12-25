@@ -9,6 +9,48 @@ interface MarkdownEditorProps {
   disabled?: boolean;
 }
 
+// List patterns for continuation
+const LIST_PATTERNS = {
+  bullet: /^(\s*)[-*+]\s+(.*)$/,
+  numbered: /^(\s*)(\d+)\.\s+(.*)$/,
+  checklist: /^(\s*)- \[([ x])\]\s+(.*)$/,
+};
+
+function getListInfo(line: string) {
+  const bulletMatch = line.match(LIST_PATTERNS.bullet);
+  if (bulletMatch) {
+    return {
+      type: 'bullet' as const,
+      indent: bulletMatch[1],
+      content: bulletMatch[2],
+      prefix: `${bulletMatch[1]}- `,
+    };
+  }
+
+  const numberedMatch = line.match(LIST_PATTERNS.numbered);
+  if (numberedMatch) {
+    const nextNum = parseInt(numberedMatch[2], 10) + 1;
+    return {
+      type: 'numbered' as const,
+      indent: numberedMatch[1],
+      content: numberedMatch[3],
+      prefix: `${numberedMatch[1]}${nextNum}. `,
+    };
+  }
+
+  const checklistMatch = line.match(LIST_PATTERNS.checklist);
+  if (checklistMatch) {
+    return {
+      type: 'checklist' as const,
+      indent: checklistMatch[1],
+      content: checklistMatch[3],
+      prefix: `${checklistMatch[1]}- [ ] `,
+    };
+  }
+
+  return null;
+}
+
 export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [slashMenu, setSlashMenu] = useState<{
@@ -96,6 +138,51 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
       return;
     }
 
+    // Handle Enter for list continuation
+    if (e.key === 'Enter' && !e.shiftKey) {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+
+      const { selectionStart, selectionEnd } = textarea;
+      if (selectionStart !== selectionEnd) return; // Don't handle with selection
+
+      const lines = content.slice(0, selectionStart).split('\n');
+      const currentLine = lines[lines.length - 1];
+      const listInfo = getListInfo(currentLine);
+
+      if (listInfo) {
+        e.preventDefault();
+
+        // Check if current list item is empty (just the prefix)
+        if (listInfo.content.trim() === '') {
+          // Exit list mode - remove the prefix and insert blank line
+          const beforeLine = content.slice(0, selectionStart - currentLine.length);
+          const afterCursor = content.slice(selectionStart);
+          const newContent = beforeLine + '\n' + afterCursor;
+          const newCursorPos = beforeLine.length + 1;
+
+          onChange(newContent);
+          requestAnimationFrame(() => {
+            textarea.selectionStart = newCursorPos;
+            textarea.selectionEnd = newCursorPos;
+          });
+        } else {
+          // Continue list with new item
+          const before = content.slice(0, selectionStart);
+          const after = content.slice(selectionStart);
+          const newContent = before + '\n' + listInfo.prefix + after;
+          const newCursorPos = selectionStart + 1 + listInfo.prefix.length;
+
+          onChange(newContent);
+          requestAnimationFrame(() => {
+            textarea.selectionStart = newCursorPos;
+            textarea.selectionEnd = newCursorPos;
+          });
+        }
+        return;
+      }
+    }
+
     // Handle keyboard shortcuts
     const shortcut = getKeyboardShortcut(e.nativeEvent);
     if (shortcut) {
@@ -117,14 +204,46 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
       });
     }
 
-    // Handle Tab for indent
+    // Handle Tab for indent/outdent in lists
     if (e.key === 'Tab') {
-      e.preventDefault();
       const textarea = textareaRef.current;
       if (!textarea) return;
 
-      const { selectionStart, selectionEnd } = textarea;
-      const newContent = content.slice(0, selectionStart) + '  ' + content.slice(selectionEnd);
+      const { selectionStart } = textarea;
+      const lines = content.slice(0, selectionStart).split('\n');
+      const currentLine = lines[lines.length - 1];
+      const listInfo = getListInfo(currentLine);
+
+      if (listInfo) {
+        e.preventDefault();
+        const lineStart = selectionStart - currentLine.length;
+
+        if (e.shiftKey) {
+          // Outdent - remove up to 2 spaces from start
+          const spacesToRemove = Math.min(2, listInfo.indent.length);
+          if (spacesToRemove > 0) {
+            const newContent = content.slice(0, lineStart) + currentLine.slice(spacesToRemove) + content.slice(selectionStart);
+            onChange(newContent);
+            requestAnimationFrame(() => {
+              textarea.selectionStart = selectionStart - spacesToRemove;
+              textarea.selectionEnd = selectionStart - spacesToRemove;
+            });
+          }
+        } else {
+          // Indent - add 2 spaces
+          const newContent = content.slice(0, lineStart) + '  ' + currentLine + content.slice(selectionStart);
+          onChange(newContent);
+          requestAnimationFrame(() => {
+            textarea.selectionStart = selectionStart + 2;
+            textarea.selectionEnd = selectionStart + 2;
+          });
+        }
+        return;
+      }
+
+      // Regular tab behavior for non-list content
+      e.preventDefault();
+      const newContent = content.slice(0, selectionStart) + '  ' + content.slice(textarea.selectionEnd);
       onChange(newContent);
 
       requestAnimationFrame(() => {
