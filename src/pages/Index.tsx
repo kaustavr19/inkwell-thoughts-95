@@ -5,6 +5,7 @@ import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { MarkdownPreview } from '@/components/MarkdownPreview';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
 import { DrawingToolbar } from '@/components/DrawingToolbar';
+import { ViewThemeDock } from '@/components/ViewThemeDock';
 import { NoteTitle } from '@/components/NoteTitle';
 import { SaveIndicator } from '@/components/SaveIndicator';
 import { DrawingStroke } from '@/lib/storage';
@@ -52,8 +53,24 @@ const Index = () => {
   // Handle keyboard shortcuts for layout
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape returns to split view
       if (e.key === 'Escape' && note?.layout !== 'split') {
         updateLayout('split');
+        return;
+      }
+
+      // Ctrl/Cmd+Alt+1/2/3 for view switching
+      if ((e.ctrlKey || e.metaKey) && e.altKey) {
+        if (e.key === '1') {
+          e.preventDefault();
+          updateLayout('write');
+        } else if (e.key === '2') {
+          e.preventDefault();
+          updateLayout('split');
+        } else if (e.key === '3') {
+          e.preventDefault();
+          updateLayout('preview');
+        }
       }
     };
 
@@ -96,13 +113,6 @@ const Index = () => {
     const lastStroke = note.drawings[note.drawings.length - 1];
     setRedoStack((prev) => [...prev, lastStroke]);
     undoStroke();
-  };
-
-  const handleRedo = () => {
-    if (redoStack.length === 0) return;
-    const strokeToRedo = redoStack[redoStack.length - 1];
-    setRedoStack((prev) => prev.slice(0, -1));
-    addStroke(strokeToRedo);
   };
 
   const handleClear = () => {
@@ -150,6 +160,14 @@ const Index = () => {
         <SaveIndicator status={saveStatus} />
       </header>
 
+      {/* Top-right dock for view/theme */}
+      <ViewThemeDock
+        theme={note.theme}
+        onThemeChange={updateTheme}
+        layout={note.layout}
+        onLayoutChange={updateLayout}
+      />
+
       {/* Main content */}
       <main className="flex-1 relative overflow-hidden" style={{ paddingBottom: '80px' }}>
         <div className="flex h-full">
@@ -191,7 +209,7 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Docked toolbar */}
+      {/* Bottom docked toolbar - drawing only */}
       <DrawingToolbar
         tool={tool}
         onToolChange={setTool}
@@ -202,14 +220,8 @@ const Index = () => {
         strokeSize={strokeSize}
         onStrokeSizeChange={setStrokeSize}
         onUndo={handleUndo}
-        onRedo={handleRedo}
         onClear={handleClear}
         canUndo={note.drawings.length > 0}
-        canRedo={redoStack.length > 0}
-        theme={note.theme}
-        onThemeChange={updateTheme}
-        layout={note.layout}
-        onLayoutChange={updateLayout}
         onExport={exportNote}
         onImport={handleImportClick}
         onNewNote={handleNewNote}
