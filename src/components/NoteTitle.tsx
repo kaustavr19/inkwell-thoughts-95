@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, X } from 'lucide-react';
 
 interface NoteTitleProps {
   title: string;
   onChange: (title: string) => void;
+  savedAt?: Date | null;
 }
 
-export function NoteTitle({ title, onChange }: NoteTitleProps) {
+export function NoteTitle({ title, onChange, savedAt }: NoteTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,9 +44,24 @@ export function NoteTitle({ title, onChange }: NoteTitleProps) {
     }
   };
 
-  if (isEditing) {
-    return (
-      <div className="flex items-center gap-2">
+  const getTimeAgo = () => {
+    if (!savedAt) return null;
+    const now = new Date();
+    const diffMs = now.getTime() - savedAt.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    
+    if (diffSec < 5) return 'just now';
+    if (diffSec < 60) return `${diffSec}s ago`;
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) return `${diffHour}h ago`;
+    return savedAt.toLocaleDateString();
+  };
+
+  return (
+    <div className="masthead">
+      {isEditing ? (
         <input
           ref={inputRef}
           type="text"
@@ -54,20 +69,27 @@ export function NoteTitle({ title, onChange }: NoteTitleProps) {
           onChange={(e) => setEditValue(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
-          className="bg-transparent border-b border-primary/50 px-1 py-0.5 text-lg font-semibold focus:outline-none focus:border-primary"
-          style={{ minWidth: '120px' }}
+          className="masthead-title-input"
         />
-      </div>
-    );
-  }
-
-  return (
-    <button
-      onClick={() => setIsEditing(true)}
-      className="text-lg font-semibold hover:text-primary transition-colors cursor-text"
-      title="Click to rename"
-    >
-      {title}
-    </button>
+      ) : (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="masthead-title hover:text-primary transition-colors duration-200 cursor-text"
+          title="Click to rename"
+        >
+          {title}
+        </button>
+      )}
+      
+      {/* Decorative rule */}
+      <div className="masthead-rule" />
+      
+      {/* Saved indicator */}
+      {savedAt && (
+        <div className="masthead-meta">
+          Saved locally • {getTimeAgo()}
+        </div>
+      )}
+    </div>
   );
 }

@@ -7,7 +7,6 @@ import { DrawingCanvas } from '@/components/DrawingCanvas';
 import { DrawingToolbar } from '@/components/DrawingToolbar';
 import { ViewThemeDock } from '@/components/ViewThemeDock';
 import { NoteTitle } from '@/components/NoteTitle';
-import { SaveIndicator } from '@/components/SaveIndicator';
 import { DrawingStroke } from '@/lib/storage';
 
 const Index = () => {
@@ -41,7 +40,15 @@ const Index = () => {
   } = useDrawing();
 
   const [redoStack, setRedoStack] = useState<DrawingStroke[]>([]);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Track last saved time
+  useEffect(() => {
+    if (saveStatus === 'saved') {
+      setLastSavedAt(new Date());
+    }
+  }, [saveStatus]);
 
   // Apply theme class
   useEffect(() => {
@@ -115,6 +122,13 @@ const Index = () => {
     undoStroke();
   };
 
+  const handleRedo = () => {
+    if (redoStack.length === 0) return;
+    const strokeToRedo = redoStack[redoStack.length - 1];
+    setRedoStack((prev) => prev.slice(0, -1));
+    addStroke(strokeToRedo);
+  };
+
   const handleClear = () => {
     if (!note || note.drawings.length === 0) return;
     if (window.confirm('Clear all drawings? This cannot be undone.')) {
@@ -134,8 +148,8 @@ const Index = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading InkPad...</p>
+          <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground font-medium">Loading InkPad...</p>
         </div>
       </div>
     );
@@ -153,11 +167,14 @@ const Index = () => {
   const showPreview = note.layout === 'split' || note.layout === 'preview';
 
   return (
-    <div className="flex flex-col h-screen bg-background">
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-background/80 backdrop-blur-sm z-30">
-        <NoteTitle title={note.title} onChange={updateTitle} />
-        <SaveIndicator status={saveStatus} />
+    <div className="flex flex-col h-screen bg-background paper-texture">
+      {/* Masthead header */}
+      <header className="relative z-20 pt-4">
+        <NoteTitle 
+          title={note.title} 
+          onChange={updateTitle}
+          savedAt={lastSavedAt}
+        />
       </header>
 
       {/* Top-right dock for view/theme */}
@@ -169,7 +186,7 @@ const Index = () => {
       />
 
       {/* Main content */}
-      <main className="flex-1 relative overflow-hidden" style={{ paddingBottom: '80px' }}>
+      <main className="flex-1 relative overflow-hidden" style={{ paddingBottom: '88px' }}>
         <div className="flex h-full">
           {/* Editor pane */}
           {showEditor && (
@@ -220,8 +237,10 @@ const Index = () => {
         strokeSize={strokeSize}
         onStrokeSizeChange={setStrokeSize}
         onUndo={handleUndo}
+        onRedo={handleRedo}
         onClear={handleClear}
         canUndo={note.drawings.length > 0}
+        canRedo={redoStack.length > 0}
         onExport={exportNote}
         onImport={handleImportClick}
         onNewNote={handleNewNote}

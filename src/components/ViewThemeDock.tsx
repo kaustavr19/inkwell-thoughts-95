@@ -4,8 +4,8 @@ import {
   Moon,
   Sunset,
   Columns2,
-  FileText,
-  BookOpen,
+  PanelLeft,
+  PanelRight,
 } from 'lucide-react';
 import { NoteData } from '@/lib/storage';
 import {
@@ -29,7 +29,7 @@ export function ViewThemeDock({
   onLayoutChange,
 }: ViewThemeDockProps) {
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={200}>
       <div className="top-right-dock">
         {/* Layout controls */}
         <Tooltip>
@@ -39,10 +39,10 @@ export function ViewThemeDock({
               onClick={() => onLayoutChange('write')}
               aria-pressed={layout === 'write'}
             >
-              <FileText className="w-4 h-4" />
+              <PanelLeft className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Write View
           </TooltipContent>
         </Tooltip>
@@ -57,7 +57,7 @@ export function ViewThemeDock({
               <Columns2 className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Split View
           </TooltipContent>
         </Tooltip>
@@ -69,10 +69,10 @@ export function ViewThemeDock({
               onClick={() => onLayoutChange('preview')}
               aria-pressed={layout === 'preview'}
             >
-              <BookOpen className="w-4 h-4" />
+              <PanelRight className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Preview View
           </TooltipContent>
         </Tooltip>
@@ -90,7 +90,7 @@ export function ViewThemeDock({
               <Sun className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Light
           </TooltipContent>
         </Tooltip>
@@ -105,7 +105,7 @@ export function ViewThemeDock({
               <Moon className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Dark
           </TooltipContent>
         </Tooltip>
@@ -120,7 +120,7 @@ export function ViewThemeDock({
               <Sunset className="w-4 h-4" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
+          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
             Nightlight
           </TooltipContent>
         </Tooltip>
