@@ -24,6 +24,8 @@ export default {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          hover: "hsl(var(--primary-hover))",
+          pressed: "hsl(var(--primary-pressed))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -50,6 +52,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          2: "hsl(var(--surface-2))",
+        },
         toolbar: {
           DEFAULT: "hsl(var(--toolbar-bg))",
           border: "hsl(var(--toolbar-border))",
@@ -60,6 +66,14 @@ export default {
         ink: {
           surface: "hsl(var(--ink-surface))",
           pen: "hsl(var(--ink-pen-default))",
+        },
+        neon: {
+          pink: "hsl(var(--neon-pink))",
+          lime: "hsl(var(--neon-lime))",
+          cyan: "hsl(var(--neon-cyan))",
+          orange: "hsl(var(--neon-orange))",
+          yellow: "hsl(var(--neon-yellow))",
+          purple: "hsl(var(--neon-purple))",
         },
       },
       borderRadius: {
