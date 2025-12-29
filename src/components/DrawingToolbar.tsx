@@ -1,10 +1,11 @@
 import React from 'react';
 import {
   MousePointer2,
-  Pen,
+  PenTool,
   Highlighter,
   Eraser,
   Undo2,
+  Redo2,
   Trash2,
   Download,
   Upload,
@@ -28,8 +29,10 @@ interface DrawingToolbarProps {
   strokeSize: StrokeSize;
   onStrokeSizeChange: (size: StrokeSize) => void;
   onUndo: () => void;
+  onRedo: () => void;
   onClear: () => void;
   canUndo: boolean;
+  canRedo: boolean;
   onExport: () => void;
   onImport: () => void;
   onNewNote: () => void;
@@ -45,8 +48,10 @@ export function DrawingToolbar({
   strokeSize,
   onStrokeSizeChange,
   onUndo,
+  onRedo,
   onClear,
   canUndo,
+  canRedo,
   onExport,
   onImport,
   onNewNote,
@@ -58,7 +63,7 @@ export function DrawingToolbar({
   const showColorPicker = tool === 'pen' || tool === 'highlighter';
 
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={200}>
       <div className="docked-toolbar">
         {/* File operations */}
         <Tooltip>
@@ -67,7 +72,7 @@ export function DrawingToolbar({
               <FilePlus className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             New Note
           </TooltipContent>
         </Tooltip>
@@ -78,7 +83,7 @@ export function DrawingToolbar({
               <Upload className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Import .md
           </TooltipContent>
         </Tooltip>
@@ -89,7 +94,7 @@ export function DrawingToolbar({
               <Download className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Export .md
           </TooltipContent>
         </Tooltip>
@@ -106,7 +111,7 @@ export function DrawingToolbar({
               <MousePointer2 className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Select (Text Mode)
           </TooltipContent>
         </Tooltip>
@@ -117,11 +122,11 @@ export function DrawingToolbar({
               className={`toolbar-btn ${tool === 'pen' ? 'active' : ''}`}
               onClick={() => onToolChange('pen')}
             >
-              <Pen className="w-5 h-5" />
+              <PenTool className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
-            Draw
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
+            Pen
           </TooltipContent>
         </Tooltip>
 
@@ -134,8 +139,8 @@ export function DrawingToolbar({
               <Highlighter className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
-            Highlight
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
+            Highlighter
           </TooltipContent>
         </Tooltip>
 
@@ -148,7 +153,7 @@ export function DrawingToolbar({
               <Eraser className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Eraser
           </TooltipContent>
         </Tooltip>
@@ -156,7 +161,7 @@ export function DrawingToolbar({
         {showColorPicker && (
           <>
             <div className="toolbar-divider" />
-            <div className="flex items-center gap-1 px-1">
+            <div className="flex items-center gap-1.5 px-1">
               {colors.map((color) => (
                 <Tooltip key={color.id}>
                   <TooltipTrigger asChild>
@@ -166,7 +171,7 @@ export function DrawingToolbar({
                       onClick={() => onColorChange(color.value)}
                     />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="text-xs">
+                  <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
                     {color.label}
                   </TooltipContent>
                 </Tooltip>
@@ -189,7 +194,7 @@ export function DrawingToolbar({
 
         <div className="toolbar-divider" />
 
-        {/* Undo/Clear */}
+        {/* Undo/Redo/Clear */}
         <Tooltip>
           <TooltipTrigger asChild>
             <button
@@ -200,8 +205,23 @@ export function DrawingToolbar({
               <Undo2 className={`w-5 h-5 ${!canUndo ? 'opacity-40' : ''}`} />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Undo
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className="toolbar-btn"
+              onClick={onRedo}
+              disabled={!canRedo}
+            >
+              <Redo2 className={`w-5 h-5 ${!canRedo ? 'opacity-40' : ''}`} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
+            Redo
           </TooltipContent>
         </Tooltip>
 
@@ -211,7 +231,7 @@ export function DrawingToolbar({
               <Trash2 className="w-5 h-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="top" className="text-xs">
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Clear Drawings
           </TooltipContent>
         </Tooltip>
