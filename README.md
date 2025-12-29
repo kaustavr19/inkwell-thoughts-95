@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# InkPad
 
-## Project info
+A beautiful, seamless blend of Markdown writing and freehand drawing. Capture your thoughts in text, illustrate them with sketches, and customize your writing environment to match your flow.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Live Demo
 
-## How can I edit this code?
+**[Try InkPad Live Here](https://inkwell-thoughts-95.lovable.app/)**
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+*   **Markdown Editor**: Write with a clean, distraction-free Markdown editor.
+*   **Creative Drawing Tools**: Sketch, annotate, and highlight directly over your notes using the pen and highlighter tools.
+*   **Flexible Layouts**:
+    *   **Write Mode**: Focus purely on your text.
+    *   **Split Mode**: See your code and preview side-by-side.
+    *   **Preview Mode**: View your final document with drawings overlay.
+*   **Customizable Themes**: Switch between **Light**, **Dark**, and the soothing **Nightlight** theme.
+*   **Local Auto-Save**: Your work is automatically saved to your browser's local storage (IndexedDB), so you never lose a thought.
+*   **Import & Export**:
+    *   Export notes as `.md` files (drawings are preserved as metadata!).
+    *   Import existing Markdown files to continue working.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🛠️ Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+This project is built with a modern frontend stack:
 
-**Use your preferred IDE**
+*   [React](https://react.dev/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Vite](https://vitejs.dev/)
+*   [Tailwind CSS](https://tailwindcss.com/)
+*   [shadcn/ui](https://ui.shadcn.com/)
+*   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (via `idb`)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 💻 Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Follow these steps to run InkPad locally on your machine.
 
-Follow these steps:
+### Prerequisites
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+*   Node.js & npm installed (Recommended: Use [nvm](https://github.com/nvm-sh/nvm))
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+1.  **Clone the repository**
+    ```bash
+    git clone <YOUR_GIT_URL>
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+2.  **Navigate to the project directory**
+    ```bash
+    cd <YOUR_PROJECT_NAME>
+    ```
 
-**Edit a file directly in GitHub**
+3.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
 
-**Use GitHub Codespaces**
+## ⌨️ Keyboard Shortcuts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Streamline your workflow with these shortcuts:
 
-## What technologies are used for this project?
+*   **Switch Views**:
+    *   `Ctrl` + `Alt` + `1` (or `Cmd` + `Alt` + `1`): **Write View**
+    *   `Ctrl` + `Alt` + `2` (or `Cmd` + `Alt` + `2`): **Split View**
+    *   `Ctrl` + `Alt` + `3` (or `Cmd` + `Alt` + `3`): **Preview View**
+*   `Escape`: Return to Split View (from other views)
 
-This project is built with:
+## 🤝 Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Feel free to fork this repository and submit pull requests. Whether it's fixing bugs, improving documentation, or adding new features, contributions are welcome!
