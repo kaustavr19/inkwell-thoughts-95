@@ -120,7 +120,6 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
     const scrollContainer = textarea.closest('.overflow-auto') || textarea.parentElement;
     if (!scrollContainer) return;
     
-    const containerRect = scrollContainer.getBoundingClientRect();
     const dockTop = window.innerHeight - DOCK_CLEARANCE;
     
     // Calculate where caret is in viewport
@@ -128,7 +127,7 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
     
     // If caret would be hidden behind dock, scroll the container
     if (caretViewportY > dockTop) {
-      const scrollAmount = caretViewportY - dockTop + 20;
+      const scrollAmount = caretViewportY - dockTop + 24;
       scrollContainer.scrollTop += scrollAmount;
     }
   }, []);
@@ -362,6 +361,9 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
     }
   };
 
+  // Empty state hints
+  const isEmpty = !content || content.trim() === '';
+
   return (
     <div className="relative h-full">
       <textarea
@@ -374,9 +376,20 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
         onDragOver={(e) => e.preventDefault()}
         disabled={disabled}
         className="inkpad-editor w-full h-full p-6 bg-transparent resize-none scrollbar-thin focus:outline-none"
-        placeholder="Start writing... Type / for commands"
+        placeholder=""
         spellCheck={true}
       />
+      
+      {/* Empty state hints */}
+      {isEmpty && (
+        <div className="empty-state-hints">
+          <p className="empty-hint">Start writing...</p>
+          <p className="empty-hint-sub">Type <kbd>/</kbd> for blocks</p>
+          <p className="empty-hint-sub">Paste images with <kbd>Ctrl+V</kbd></p>
+          <p className="empty-hint-sub">Use the pen tool to annotate</p>
+        </div>
+      )}
+
       <SlashMenu
         isOpen={slashMenu.isOpen}
         position={slashMenu.position}

@@ -183,22 +183,27 @@ const Index = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background paper-texture">
+      {/* Fixed UI Layer - always visible, outside scroll */}
+      
       {/* Collapsed masthead - fixed top-left when scrolled */}
-      {isScrolled && (
+      <div className={`masthead-collapsed-wrapper ${isScrolled ? 'visible' : ''}`}>
         <NoteTitle 
           title={note.title} 
           onChange={updateTitle}
           savedAt={lastSavedAt}
+          saveStatus={saveStatus}
           isCollapsed={true}
         />
-      )}
+      </div>
 
-      {/* Top-right dock for view/theme */}
+      {/* Top-right dock for view/theme/export */}
       <ViewThemeDock
         theme={note.theme}
         onThemeChange={updateTheme}
         layout={note.layout}
         onLayoutChange={updateLayout}
+        onExportMd={exportNote}
+        onExportPdf={handleExportPdf}
       />
 
       {/* Main scrollable content */}
@@ -206,29 +211,21 @@ const Index = () => {
         ref={mainScrollRef}
         className="flex-1 overflow-auto scrollbar-thin"
       >
-        {/* Masthead - expanded when at top, collapsed is rendered separately */}
-        {!isScrolled && (
-          <header className="relative z-20 pt-4">
-            <NoteTitle 
-              title={note.title} 
-              onChange={updateTitle}
-              savedAt={lastSavedAt}
-              isCollapsed={false}
-            />
-          </header>
-        )}
-        
-        {/* Spacer when collapsed to prevent content jump */}
-        {isScrolled && <div className="h-16" />}
+        {/* Expanded masthead - visible when at top */}
+        <header className={`masthead-wrapper ${isScrolled ? 'collapsed' : ''}`}>
+          <NoteTitle 
+            title={note.title} 
+            onChange={updateTitle}
+            savedAt={lastSavedAt}
+            saveStatus={saveStatus}
+            isCollapsed={false}
+          />
+        </header>
 
-        <div className="flex min-h-[calc(100vh-180px)]">
+        <div className="editor-layout">
           {/* Editor pane */}
           {showEditor && (
-            <div
-              className={`relative ${
-                note.layout === 'split' ? 'w-1/2 border-r border-border' : 'w-full'
-              }`}
-            >
+            <div className={`editor-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
               <MarkdownEditor
                 content={note.content}
                 onChange={updateContent}
@@ -237,11 +234,12 @@ const Index = () => {
             </div>
           )}
 
+          {/* Paper crease divider - only in split view */}
+          {note.layout === 'split' && <div className="paper-crease" />}
+
           {/* Preview pane */}
           {showPreview && (
-            <div
-              className={`relative ${note.layout === 'split' ? 'w-1/2' : 'w-full'}`}
-            >
+            <div className={`preview-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
               <MarkdownPreview content={note.content} />
               
               {/* Drawing canvas overlays preview */}
@@ -259,11 +257,11 @@ const Index = () => {
           )}
         </div>
         
-        {/* Bottom padding for dock clearance - content can scroll behind */}
-        <div className="h-24" />
+        {/* Minimal bottom padding - content flows freely */}
+        <div className="h-8" />
       </main>
 
-      {/* Bottom docked toolbar - drawing only */}
+      {/* Bottom docked toolbar - drawing + file operations */}
       <DrawingToolbar
         tool={tool}
         onToolChange={setTool}
@@ -278,8 +276,6 @@ const Index = () => {
         onClear={handleClear}
         canUndo={note.drawings.length > 0}
         canRedo={redoStack.length > 0}
-        onExport={exportNote}
-        onExportPdf={handleExportPdf}
         onImport={handleImportClick}
         onNewNote={handleNewNote}
       />
