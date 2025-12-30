@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useNote } from '@/hooks/useNote';
 import { useDrawing } from '@/hooks/useDrawing';
+import { useScrollPosition } from '@/hooks/useScrollPosition';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { MarkdownPreview } from '@/components/MarkdownPreview';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
@@ -8,6 +9,7 @@ import { DrawingToolbar } from '@/components/DrawingToolbar';
 import { ViewThemeDock } from '@/components/ViewThemeDock';
 import { NoteTitle } from '@/components/NoteTitle';
 import { DrawingStroke } from '@/lib/storage';
+import { exportToPdf } from '@/lib/pdfExport';
 
 const Index = () => {
   const {
@@ -42,6 +44,10 @@ const Index = () => {
   const [redoStack, setRedoStack] = useState<DrawingStroke[]>([]);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const mainScrollRef = useRef<HTMLDivElement>(null);
+  
+  // Track scroll for masthead collapse
+  const isScrolled = useScrollPosition(mainScrollRef, 24);
 
   // Track last saved time
   useEffect(() => {
@@ -144,6 +150,15 @@ const Index = () => {
     }
   };
 
+  const handleExportPdf = () => {
+    if (!note) return;
+    exportToPdf({
+      title: note.title,
+      content: note.content,
+      drawings: note.drawings,
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -168,14 +183,15 @@ const Index = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background paper-texture">
-      {/* Masthead header */}
-      <header className="relative z-20 pt-4">
+      {/* Collapsed masthead - fixed top-left when scrolled */}
+      {isScrolled && (
         <NoteTitle 
           title={note.title} 
           onChange={updateTitle}
           savedAt={lastSavedAt}
+          isCollapsed={true}
         />
-      </header>
+      )}
 
       {/* Top-right dock for view/theme */}
       <ViewThemeDock
@@ -185,9 +201,27 @@ const Index = () => {
         onLayoutChange={updateLayout}
       />
 
-      {/* Main content */}
-      <main className="flex-1 relative overflow-hidden" style={{ paddingBottom: '88px' }}>
-        <div className="flex h-full">
+      {/* Main scrollable content */}
+      <main 
+        ref={mainScrollRef}
+        className="flex-1 overflow-auto scrollbar-thin"
+      >
+        {/* Masthead - expanded when at top, collapsed is rendered separately */}
+        {!isScrolled && (
+          <header className="relative z-20 pt-4">
+            <NoteTitle 
+              title={note.title} 
+              onChange={updateTitle}
+              savedAt={lastSavedAt}
+              isCollapsed={false}
+            />
+          </header>
+        )}
+        
+        {/* Spacer when collapsed to prevent content jump */}
+        {isScrolled && <div className="h-16" />}
+
+        <div className="flex min-h-[calc(100vh-180px)]">
           {/* Editor pane */}
           {showEditor && (
             <div
@@ -224,6 +258,9 @@ const Index = () => {
             </div>
           )}
         </div>
+        
+        {/* Bottom padding for dock clearance - content can scroll behind */}
+        <div className="h-24" />
       </main>
 
       {/* Bottom docked toolbar - drawing only */}
@@ -242,6 +279,7 @@ const Index = () => {
         canUndo={note.drawings.length > 0}
         canRedo={redoStack.length > 0}
         onExport={exportNote}
+        onExportPdf={handleExportPdf}
         onImport={handleImportClick}
         onNewNote={handleNewNote}
       />

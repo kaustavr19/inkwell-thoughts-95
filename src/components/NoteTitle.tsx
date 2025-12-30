@@ -4,9 +4,10 @@ interface NoteTitleProps {
   title: string;
   onChange: (title: string) => void;
   savedAt?: Date | null;
+  isCollapsed?: boolean;
 }
 
-export function NoteTitle({ title, onChange, savedAt }: NoteTitleProps) {
+export function NoteTitle({ title, onChange, savedAt, isCollapsed = false }: NoteTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -59,6 +60,34 @@ export function NoteTitle({ title, onChange, savedAt }: NoteTitleProps) {
     return savedAt.toLocaleDateString();
   };
 
+  // Collapsed state - sticky top-left
+  if (isCollapsed) {
+    return (
+      <div className="masthead-collapsed">
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={handleSave}
+            className="masthead-collapsed-input"
+          />
+        ) : (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="masthead-collapsed-title"
+            title="Click to rename"
+          >
+            {title}
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // Expanded state - centered masthead
   return (
     <div className="masthead">
       {isEditing ? (
