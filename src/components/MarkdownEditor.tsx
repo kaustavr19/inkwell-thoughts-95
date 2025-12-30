@@ -65,6 +65,9 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
     startIndex: 0,
   });
 
+  // Bottom dock height + buffer for caret safety
+  const DOCK_CLEARANCE = 100;
+
   const getCaretCoordinates = useCallback(() => {
     const textarea = textareaRef.current;
     if (!textarea) return { x: 0, y: 0 };
@@ -97,11 +100,47 @@ export function MarkdownEditor({ content, onChange, disabled }: MarkdownEditorPr
     return { x: Math.min(x, window.innerWidth - 250), y: Math.min(y, window.innerHeight - 320) };
   }, [content]);
 
+  // Ensure caret stays visible above bottom dock
+  const ensureCaretVisible = useCallback(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    // Get caret position relative to viewport
+    const { selectionStart } = textarea;
+    const textBefore = textarea.value.slice(0, selectionStart);
+    const lines = textBefore.split('\n');
+    const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight) || 28;
+    const paddingTop = parseFloat(getComputedStyle(textarea).paddingTop);
+    
+    const caretLineIndex = lines.length - 1;
+    const caretY = paddingTop + (caretLineIndex * lineHeight);
+    
+    // Get textarea's position and scroll container
+    const rect = textarea.getBoundingClientRect();
+    const scrollContainer = textarea.closest('.overflow-auto') || textarea.parentElement;
+    if (!scrollContainer) return;
+    
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const dockTop = window.innerHeight - DOCK_CLEARANCE;
+    
+    // Calculate where caret is in viewport
+    const caretViewportY = rect.top + caretY - textarea.scrollTop;
+    
+    // If caret would be hidden behind dock, scroll the container
+    if (caretViewportY > dockTop) {
+      const scrollAmount = caretViewportY - dockTop + 20;
+      scrollContainer.scrollTop += scrollAmount;
+    }
+  }, []);
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
     const { selectionStart } = e.target;
 
     onChange(newContent);
+
+    // Ensure caret stays visible
+    requestAnimationFrame(ensureCaretVisible);
 
     // Check for slash command trigger
     const textBefore = newContent.slice(0, selectionStart);

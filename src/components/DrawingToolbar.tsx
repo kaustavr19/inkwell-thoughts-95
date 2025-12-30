@@ -10,6 +10,7 @@ import {
   Download,
   Upload,
   FilePlus,
+  FileText,
 } from 'lucide-react';
 import { DrawingTool, StrokeSize, PEN_COLORS, HIGHLIGHTER_COLORS } from '@/hooks/useDrawing';
 import {
@@ -34,6 +35,7 @@ interface DrawingToolbarProps {
   canUndo: boolean;
   canRedo: boolean;
   onExport: () => void;
+  onExportPdf: () => void;
   onImport: () => void;
   onNewNote: () => void;
 }
@@ -53,6 +55,7 @@ export function DrawingToolbar({
   canUndo,
   canRedo,
   onExport,
+  onExportPdf,
   onImport,
   onNewNote,
 }: DrawingToolbarProps) {
@@ -96,6 +99,17 @@ export function DrawingToolbar({
           </TooltipTrigger>
           <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
             Export .md
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button className="toolbar-btn" onClick={onExportPdf}>
+              <FileText className="w-5 h-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={8} className="text-xs font-medium">
+            Download PDF
           </TooltipContent>
         </Tooltip>
 

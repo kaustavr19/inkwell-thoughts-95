@@ -239,9 +239,11 @@
 }
 
 @layer components {
-  /* Masthead header - newspaper style */
+  /* Masthead header - newspaper style (expanded) */
   .masthead {
     @apply relative flex flex-col items-center justify-center py-8 px-4;
+    max-width: calc(100% - 280px);
+    margin: 0 auto;
   }
 
   .masthead-title {
@@ -283,6 +285,67 @@
 
   .masthead-meta {
     @apply mt-3 text-xs text-muted-foreground font-medium;
+  }
+
+  /* Masthead collapsed state - sticky top-left */
+  .masthead-collapsed {
+    @apply fixed top-4 left-4 z-50;
+    @apply flex items-center;
+    background: hsl(var(--toolbar-bg));
+    border: 2px solid hsl(var(--toolbar-border));
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-2);
+    padding: 8px 16px;
+    max-width: calc(100% - 320px);
+    animation: masthead-collapse 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes masthead-collapse {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .masthead-collapsed-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    @apply text-foreground cursor-text;
+    @apply transition-colors duration-150;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+
+  .masthead-collapsed-title:hover {
+    color: hsl(var(--primary));
+  }
+
+  .masthead-collapsed-input {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    @apply bg-transparent outline-none;
+    border-bottom: 2px solid hsl(var(--primary));
+    min-width: 150px;
+    max-width: 300px;
+  }
+
+  @media (max-width: 640px) {
+    .masthead-collapsed {
+      max-width: calc(100% - 200px);
+    }
+    
+    .masthead-collapsed-title,
+    .masthead-collapsed-input {
+      max-width: 150px;
+    }
   }
 
   /* Editor styles */
