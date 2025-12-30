@@ -8,6 +8,7 @@ import {
   PanelRight,
 } from 'lucide-react';
 import { NoteData } from '@/lib/storage';
+import { ExportDropdown } from './ExportDropdown';
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +21,8 @@ interface ViewThemeDockProps {
   onThemeChange: (theme: NoteData['theme']) => void;
   layout: NoteData['layout'];
   onLayoutChange: (layout: NoteData['layout']) => void;
+  onExportMd: () => void;
+  onExportPdf: () => void;
 }
 
 export function ViewThemeDock({
@@ -27,6 +30,8 @@ export function ViewThemeDock({
   onThemeChange,
   layout,
   onLayoutChange,
+  onExportMd,
+  onExportPdf,
 }: ViewThemeDockProps) {
   return (
     <TooltipProvider delayDuration={200}>
@@ -124,6 +129,11 @@ export function ViewThemeDock({
             Nightlight
           </TooltipContent>
         </Tooltip>
+
+        <div className="dock-divider" />
+
+        {/* Export dropdown */}
+        <ExportDropdown onExportMd={onExportMd} onExportPdf={onExportPdf} />
       </div>
     </TooltipProvider>
   );

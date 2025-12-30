@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { SaveIndicator } from './SaveIndicator';
+import { SaveStatus } from '@/hooks/useNote';
 
 interface NoteTitleProps {
   title: string;
   onChange: (title: string) => void;
   savedAt?: Date | null;
+  saveStatus?: SaveStatus;
   isCollapsed?: boolean;
 }
 
-export function NoteTitle({ title, onChange, savedAt, isCollapsed = false }: NoteTitleProps) {
+export function NoteTitle({ title, onChange, savedAt, saveStatus = 'saved', isCollapsed = false }: NoteTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(title);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,22 +48,7 @@ export function NoteTitle({ title, onChange, savedAt, isCollapsed = false }: Not
     }
   };
 
-  const getTimeAgo = () => {
-    if (!savedAt) return null;
-    const now = new Date();
-    const diffMs = now.getTime() - savedAt.getTime();
-    const diffSec = Math.floor(diffMs / 1000);
-    
-    if (diffSec < 5) return 'just now';
-    if (diffSec < 60) return `${diffSec}s ago`;
-    const diffMin = Math.floor(diffSec / 60);
-    if (diffMin < 60) return `${diffMin}m ago`;
-    const diffHour = Math.floor(diffMin / 60);
-    if (diffHour < 24) return `${diffHour}h ago`;
-    return savedAt.toLocaleDateString();
-  };
-
-  // Collapsed state - sticky top-left
+  // Collapsed state - shown via wrapper visibility
   if (isCollapsed) {
     return (
       <div className="masthead-collapsed">
@@ -113,12 +101,10 @@ export function NoteTitle({ title, onChange, savedAt, isCollapsed = false }: Not
       {/* Decorative rule */}
       <div className="masthead-rule" />
       
-      {/* Saved indicator */}
-      {savedAt && (
-        <div className="masthead-meta">
-          Saved locally • {getTimeAgo()}
-        </div>
-      )}
+      {/* Saved indicator with live status */}
+      <div className="masthead-meta">
+        <SaveIndicator status={saveStatus} savedAt={savedAt || null} />
+      </div>
     </div>
   );
 }

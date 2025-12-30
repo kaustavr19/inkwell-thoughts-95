@@ -239,6 +239,35 @@
 }
 
 @layer components {
+  /* Masthead wrapper - controls visibility transitions */
+  .masthead-wrapper {
+    @apply relative z-20 pt-4;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .masthead-wrapper.collapsed {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+  }
+
+  /* Collapsed masthead wrapper - fixed overlay */
+  .masthead-collapsed-wrapper {
+    @apply fixed top-4 left-4 z-50;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .masthead-collapsed-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
   /* Masthead header - newspaper style (expanded) */
   .masthead {
     @apply relative flex flex-col items-center justify-center py-8 px-4;
@@ -289,26 +318,13 @@
 
   /* Masthead collapsed state - sticky top-left */
   .masthead-collapsed {
-    @apply fixed top-4 left-4 z-50;
     @apply flex items-center;
     background: hsl(var(--toolbar-bg));
     border: 2px solid hsl(var(--toolbar-border));
     border-radius: var(--r-lg);
     box-shadow: var(--shadow-2);
     padding: 8px 16px;
-    max-width: calc(100% - 320px);
-    animation: masthead-collapse 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  @keyframes masthead-collapse {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    max-width: calc(100vw - 320px);
   }
 
   .masthead-collapsed-title {
@@ -339,13 +355,156 @@
 
   @media (max-width: 640px) {
     .masthead-collapsed {
-      max-width: calc(100% - 200px);
+      max-width: calc(100vw - 200px);
     }
     
     .masthead-collapsed-title,
     .masthead-collapsed-input {
       max-width: 150px;
     }
+  }
+
+  /* Save indicator */
+  .save-indicator {
+    @apply inline-flex items-center gap-1;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Editor layout */
+  .editor-layout {
+    @apply flex relative;
+    min-height: calc(100vh - 180px);
+  }
+
+  .editor-pane {
+    @apply relative;
+  }
+
+  .editor-pane.split {
+    width: 50%;
+  }
+
+  .editor-pane.full {
+    width: 100%;
+  }
+
+  .preview-pane {
+    @apply relative;
+  }
+
+  .preview-pane.split {
+    width: 50%;
+  }
+
+  .preview-pane.full {
+    width: 100%;
+  }
+
+  /* Paper crease - subtle fold effect */
+  .paper-crease {
+    @apply absolute top-0 bottom-0 z-10;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    pointer-events: none;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--border-soft)),
+      hsl(var(--border) / 0.08),
+      hsl(var(--border-soft)),
+      transparent
+    );
+  }
+
+  .paper-crease::before {
+    content: '';
+    @apply absolute inset-0;
+    width: 12px;
+    left: -5px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--foreground) / 0.02) 30%,
+      hsl(var(--foreground) / 0.04) 50%,
+      hsl(var(--foreground) / 0.02) 70%,
+      transparent
+    );
+  }
+
+  /* Empty state hints */
+  .empty-state-hints {
+    @apply absolute top-6 left-6 pointer-events-none select-none;
+  }
+
+  .empty-hint {
+    @apply text-muted-foreground/50 font-medium;
+    font-size: var(--text-lg);
+    line-height: var(--lh-relaxed);
+  }
+
+  .empty-hint-sub {
+    @apply text-muted-foreground/30 text-sm mt-1;
+  }
+
+  .empty-hint-sub kbd {
+    @apply px-1.5 py-0.5 rounded text-xs font-mono;
+    background: hsl(var(--muted) / 0.5);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  /* Export dropdown */
+  .export-dropdown {
+    @apply absolute z-50;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 200px;
+    background: hsl(var(--popover));
+    border: 2px solid hsl(var(--border));
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-pop);
+    overflow: hidden;
+    animation: dropdown-in 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .export-dropdown-up {
+    top: auto;
+    bottom: calc(100% + 8px);
+  }
+
+  @keyframes dropdown-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .export-dropdown-item {
+    @apply flex items-center gap-3 w-full px-4 py-3;
+    @apply text-sm text-foreground font-medium;
+    @apply transition-colors duration-100;
+  }
+
+  .export-dropdown-item:hover {
+    background: hsl(var(--primary) / 0.12);
+  }
+
+  .export-dropdown-item:focus {
+    background: hsl(var(--primary) / 0.12);
+    outline: none;
+  }
+
+  .export-dropdown-ext {
+    @apply ml-auto text-xs text-muted-foreground font-mono;
+  }
+
+  /* Toolbar groups for visual separation */
+  .toolbar-group {
+    @apply flex items-center gap-1;
   }
 
   /* Editor styles */
