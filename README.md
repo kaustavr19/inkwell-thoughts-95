@@ -22,13 +22,15 @@ A beautiful, seamless blend of Markdown writing and freehand drawing. Capture yo
 
 ## 🛠️ Tech Stack
 
-This project is built with a modern frontend stack:
+This project is built with a modern, lightweight frontend stack:
 
 *   [React](https://react.dev/)
 *   [TypeScript](https://www.typescriptlang.org/)
 *   [Vite](https://vitejs.dev/)
 *   [Tailwind CSS](https://tailwindcss.com/)
 *   [shadcn/ui](https://ui.shadcn.com/)
+*   [marked](https://marked.js.org/) (for Markdown parsing)
+*   [Lucide React](https://lucide.dev/) (for icons)
 *   [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) (via `idb`)
 
 ## 💻 Getting Started
