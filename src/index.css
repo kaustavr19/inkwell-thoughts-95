@@ -56,8 +56,15 @@
     --ink-surface: 35 20% 95%;
     --ink-pen-default: 0 0% 8%;
     --toolbar-bg: 35 15% 93%;
-    --toolbar-border: 35 10% 85%;
+    --toolbar-border: 35 10% 80%;
     --status-bg: 35 15% 90%;
+    
+    /* Dock-specific tokens for consistent contrast */
+    --dock-bg: 35 15% 94%;
+    --dock-border: 35 12% 78%;
+    --dock-fg: 0 0% 15%;
+    --dock-fg-muted: 0 0% 40%;
+    --dock-active-bg: 35 18% 97%;
     
     /* Neumorphic shadows - soft, diffused */
     --shadow-out-light: -6px -6px 12px rgba(255, 255, 255, 0.8);
@@ -144,9 +151,16 @@
     /* InkPad specific */
     --ink-surface: 220 15% 12%;
     --ink-pen-default: 220 10% 88%;
-    --toolbar-bg: 220 15% 15%;
-    --toolbar-border: 220 12% 22%;
-    --status-bg: 220 15% 18%;
+    --toolbar-bg: 220 15% 18%;
+    --toolbar-border: 220 12% 28%;
+    --status-bg: 220 15% 20%;
+    
+    /* Dock-specific tokens for consistent contrast in dark mode */
+    --dock-bg: 220 15% 20%;
+    --dock-border: 220 12% 32%;
+    --dock-fg: 220 10% 92%;
+    --dock-fg-muted: 220 10% 65%;
+    --dock-active-bg: 220 15% 24%;
     
     /* Dark neumorphic shadows */
     --shadow-out-light: -6px -6px 12px rgba(255, 255, 255, 0.03);
@@ -163,64 +177,71 @@
   }
 
   .nightlight {
-    /* Neumorphic Nightlight theme - warm sepia */
-    --background: 30 20% 14%;
-    --foreground: 35 20% 88%;
+    /* Neumorphic Nightlight theme - warm amber, high contrast */
+    --background: 30 25% 12%;
+    --foreground: 40 30% 92%;
 
-    --card: 30 18% 17%;
-    --card-foreground: 35 20% 88%;
+    --card: 30 22% 16%;
+    --card-foreground: 40 30% 92%;
 
-    --popover: 30 18% 16%;
-    --popover-foreground: 35 20% 88%;
+    --popover: 30 22% 18%;
+    --popover-foreground: 40 30% 92%;
 
-    --surface: 30 18% 17%;
-    --surface-2: 30 18% 20%;
+    --surface: 30 22% 16%;
+    --surface-2: 30 22% 20%;
 
-    --primary: 35 85% 55%;
-    --primary-hover: 35 85% 50%;
-    --primary-pressed: 35 85% 45%;
-    --primary-foreground: 30 20% 10%;
+    --primary: 38 90% 58%;
+    --primary-hover: 38 90% 52%;
+    --primary-pressed: 38 90% 46%;
+    --primary-foreground: 30 30% 8%;
 
-    --secondary: 30 15% 20%;
-    --secondary-foreground: 35 18% 82%;
+    --secondary: 30 18% 22%;
+    --secondary-foreground: 40 25% 88%;
 
-    --muted: 30 12% 24%;
-    --muted-foreground: 35 15% 55%;
+    --muted: 30 15% 26%;
+    --muted-foreground: 35 18% 62%;
 
-    /* Warm cyberpunk accents for nightlight */
-    --accent-cyan: 35 100% 60%;
-    --accent-purple: 15 90% 60%;
-    --accent-pink: 25 100% 55%;
+    /* Warm cyberpunk accents for nightlight - amber/orange */
+    --accent-cyan: 38 100% 60%;
+    --accent-purple: 20 95% 58%;
+    --accent-pink: 28 100% 55%;
 
-    --accent: 35 100% 60%;
-    --accent-foreground: 30 20% 10%;
+    --accent: 38 100% 60%;
+    --accent-foreground: 30 30% 8%;
 
-    --destructive: 15 60% 50%;
+    --destructive: 12 65% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 28%;
-    --border-soft: 30 12% 25%;
-    --input: 30 15% 28%;
-    --ring: 35 100% 60%;
+    --border: 30 18% 32%;
+    --border-soft: 30 15% 28%;
+    --input: 30 18% 32%;
+    --ring: 38 100% 60%;
 
-    /* InkPad specific */
-    --ink-surface: 30 20% 14%;
-    --ink-pen-default: 35 18% 85%;
-    --toolbar-bg: 30 18% 17%;
-    --toolbar-border: 30 15% 25%;
-    --status-bg: 30 15% 20%;
+    /* InkPad specific - nightlight with better dock contrast */
+    --ink-surface: 30 25% 12%;
+    --ink-pen-default: 40 25% 90%;
+    --toolbar-bg: 30 22% 20%;
+    --toolbar-border: 30 20% 35%;
+    --status-bg: 30 18% 24%;
     
-    /* Warm neumorphic shadows */
-    --shadow-out-light: -6px -6px 12px rgba(255, 240, 220, 0.04);
-    --shadow-out-dark: 6px 6px 12px rgba(0, 0, 0, 0.35);
-    --shadow-in-light: inset -4px -4px 8px rgba(255, 240, 220, 0.03);
-    --shadow-in-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.25);
+    /* Dock-specific tokens for higher contrast */
+    --dock-bg: 30 22% 22%;
+    --dock-border: 30 20% 38%;
+    --dock-fg: 40 30% 92%;
+    --dock-fg-muted: 35 20% 70%;
+    --dock-active-bg: 30 22% 26%;
+    
+    /* Warm neumorphic shadows - stronger for visibility */
+    --shadow-out-light: -5px -5px 10px rgba(255, 245, 230, 0.06);
+    --shadow-out-dark: 5px 5px 10px rgba(0, 0, 0, 0.4);
+    --shadow-in-light: inset -3px -3px 6px rgba(255, 245, 230, 0.04);
+    --shadow-in-dark: inset 3px 3px 6px rgba(0, 0, 0, 0.3);
 
-    --glow-cyan: 0 0 0 2px hsl(35 100% 60% / 0.5), 0 0 22px hsl(35 100% 60% / 0.3);
-    --glow-purple: 0 0 0 2px hsl(15 90% 60% / 0.5), 0 0 22px hsl(15 90% 60% / 0.25);
-    --glow-pink: 0 0 0 2px hsl(25 100% 55% / 0.5), 0 0 22px hsl(25 100% 55% / 0.25);
+    --glow-cyan: 0 0 0 2px hsl(38 100% 60% / 0.55), 0 0 20px hsl(38 100% 60% / 0.35);
+    --glow-purple: 0 0 0 2px hsl(20 95% 58% / 0.55), 0 0 20px hsl(20 95% 58% / 0.3);
+    --glow-pink: 0 0 0 2px hsl(28 100% 55% / 0.55), 0 0 20px hsl(28 100% 55% / 0.3);
 
-    --selection-bg: 35 85% 55% / 0.25;
+    --selection-bg: 38 90% 58% / 0.3;
   }
 }
 
@@ -327,12 +348,13 @@
     @apply mt-3 text-xs text-muted-foreground font-medium;
   }
 
-  /* Masthead collapsed state - neumorphic pill */
+  /* Masthead collapsed state - neumorphic pill with high contrast */
   .masthead-collapsed {
     @apply flex items-center;
-    background: hsl(var(--toolbar-bg));
+    background: hsl(var(--dock-bg));
+    border: 1px solid hsl(var(--dock-border));
     border-radius: var(--r-xl);
-    box-shadow: var(--shadow-neu-raised);
+    box-shadow: var(--shadow-neu-raised), 0 4px 16px rgba(0, 0, 0, 0.12);
     padding: 10px 18px;
     max-width: calc(100vw - 320px);
   }
@@ -638,19 +660,20 @@
     @apply text-xs text-muted-foreground ml-auto font-medium;
   }
 
-  /* Neumorphic Bottom Dock */
+  /* Neumorphic Bottom Dock - high contrast */
   .docked-toolbar {
     @apply fixed bottom-5 left-1/2 -translate-x-1/2 z-50;
     @apply flex items-center gap-2 p-3;
-    background: hsl(var(--toolbar-bg));
+    background: hsl(var(--dock-bg));
+    border: 1px solid hsl(var(--dock-border));
     border-radius: var(--r-xl);
-    box-shadow: var(--shadow-neu-raised);
+    box-shadow: var(--shadow-neu-raised), 0 4px 20px rgba(0, 0, 0, 0.15);
   }
 
   .toolbar-btn {
     @apply w-11 h-11 flex items-center justify-center;
-    @apply text-muted-foreground;
-    background: hsl(var(--surface));
+    color: hsl(var(--dock-fg-muted));
+    background: hsl(var(--dock-bg));
     border: none;
     border-radius: var(--r-md);
     box-shadow: var(--shadow-neu-raised);
@@ -658,7 +681,7 @@
   }
 
   .toolbar-btn:hover {
-    @apply text-foreground;
+    color: hsl(var(--dock-fg));
     box-shadow: var(--shadow-neu-raised);
     transform: translateY(-1px);
   }
@@ -670,8 +693,8 @@
 
   /* Active state with cyberpunk glow */
   .toolbar-btn.active {
-    @apply text-foreground;
-    background: hsl(var(--surface-2));
+    color: hsl(var(--dock-fg));
+    background: hsl(var(--dock-active-bg));
     box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
@@ -696,7 +719,7 @@
   .toolbar-divider {
     @apply h-7 mx-2;
     width: 1px;
-    background: hsl(var(--border) / 0.5);
+    background: hsl(var(--dock-border));
     border-radius: 1px;
   }
 
@@ -747,19 +770,20 @@
     box-shadow: var(--shadow-neu-pressed), var(--glow-purple);
   }
 
-  /* Neumorphic Top-right dock */
+  /* Neumorphic Top-right dock - high contrast */
   .top-right-dock {
     @apply fixed top-4 right-4 z-50;
     @apply flex items-center gap-1.5 p-2;
-    background: hsl(var(--toolbar-bg));
+    background: hsl(var(--dock-bg));
+    border: 1px solid hsl(var(--dock-border));
     border-radius: var(--r-xl);
-    box-shadow: var(--shadow-neu-raised);
+    box-shadow: var(--shadow-neu-raised), 0 4px 16px rgba(0, 0, 0, 0.12);
   }
 
   .dock-btn {
     @apply w-10 h-10 flex items-center justify-center;
-    @apply text-muted-foreground;
-    background: hsl(var(--surface));
+    color: hsl(var(--dock-fg-muted));
+    background: hsl(var(--dock-bg));
     border: none;
     border-radius: var(--r-md);
     box-shadow: var(--shadow-neu-raised);
@@ -767,7 +791,7 @@
   }
 
   .dock-btn:hover {
-    @apply text-foreground;
+    color: hsl(var(--dock-fg));
     transform: translateY(-1px);
   }
 
@@ -777,8 +801,8 @@
   }
 
   .dock-btn.active {
-    @apply text-foreground;
-    background: hsl(var(--surface-2));
+    color: hsl(var(--dock-fg));
+    background: hsl(var(--dock-active-bg));
     box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
@@ -794,7 +818,7 @@
   .dock-divider {
     @apply h-7 mx-1;
     width: 1px;
-    background: hsl(var(--border) / 0.4);
+    background: hsl(var(--dock-border));
     border-radius: 1px;
   }
 }
