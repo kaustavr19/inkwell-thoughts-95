@@ -43,6 +43,9 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          cyan: "hsl(var(--accent-cyan))",
+          purple: "hsl(var(--accent-purple))",
+          pink: "hsl(var(--accent-pink))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -67,19 +70,18 @@ export default {
           surface: "hsl(var(--ink-surface))",
           pen: "hsl(var(--ink-pen-default))",
         },
-        neon: {
-          pink: "hsl(var(--neon-pink))",
-          lime: "hsl(var(--neon-lime))",
-          cyan: "hsl(var(--neon-cyan))",
-          orange: "hsl(var(--neon-orange))",
-          yellow: "hsl(var(--neon-yellow))",
-          purple: "hsl(var(--neon-purple))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'neu-raised': 'var(--shadow-neu-raised)',
+        'neu-pressed': 'var(--shadow-neu-pressed)',
+        'glow-cyan': 'var(--glow-cyan)',
+        'glow-purple': 'var(--glow-purple)',
+        'glow-pink': 'var(--glow-pink)',
       },
       keyframes: {
         "accordion-down": {

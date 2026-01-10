@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useNote } from '@/hooks/useNote';
 import { useDrawing } from '@/hooks/useDrawing';
-import { useScrollPosition } from '@/hooks/useScrollPosition';
+import { useMastheadCollapse } from '@/hooks/useMastheadCollapse';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { MarkdownPreview } from '@/components/MarkdownPreview';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
@@ -46,8 +46,8 @@ const Index = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const mainScrollRef = useRef<HTMLDivElement>(null);
   
-  // Track scroll for masthead collapse
-  const isScrolled = useScrollPosition(mainScrollRef, 24);
+  // IntersectionObserver-based masthead collapse
+  const [sentinelRef, isCollapsed] = useMastheadCollapse(mainScrollRef);
 
   // Track last saved time
   useEffect(() => {
@@ -182,11 +182,11 @@ const Index = () => {
   const showPreview = note.layout === 'split' || note.layout === 'preview';
 
   return (
-    <div className="flex flex-col h-screen bg-background paper-texture">
-      {/* Fixed UI Layer - always visible, outside scroll */}
+    <div className="flex flex-col h-screen bg-background">
+      {/* Fixed UI Layer - always visible, outside scroll container */}
       
       {/* Collapsed masthead - fixed top-left when scrolled */}
-      <div className={`masthead-collapsed-wrapper ${isScrolled ? 'visible' : ''}`}>
+      <div className={`masthead-collapsed-wrapper ${isCollapsed ? 'visible' : ''}`}>
         <NoteTitle 
           title={note.title} 
           onChange={updateTitle}
@@ -211,8 +211,11 @@ const Index = () => {
         ref={mainScrollRef}
         className="flex-1 overflow-auto scrollbar-thin"
       >
+        {/* Sentinel element for IntersectionObserver - placed at very top */}
+        <div ref={sentinelRef} className="h-px w-full" aria-hidden="true" />
+        
         {/* Expanded masthead - visible when at top */}
-        <header className={`masthead-wrapper ${isScrolled ? 'collapsed' : ''}`}>
+        <header className={`masthead-wrapper ${isCollapsed ? 'collapsed' : ''}`}>
           <NoteTitle 
             title={note.title} 
             onChange={updateTitle}

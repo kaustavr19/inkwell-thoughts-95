@@ -6,86 +6,88 @@
 
 @layer base {
   :root {
-    /* Neo-Pop Light theme - warm paper */
-    --background: 35 100% 97%;
-    --foreground: 0 0% 7%;
+    /* Neumorphic Light theme - soft warm surfaces */
+    --background: 35 20% 95%;
+    --foreground: 0 0% 8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
+    --card: 35 15% 93%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
+    --popover: 35 15% 94%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Surface hierarchy */
-    --surface: 0 0% 100%;
-    --surface-2: 35 100% 92%;
+    /* Neumorphic surface hierarchy */
+    --surface: 35 15% 93%;
+    --surface-2: 35 20% 97%;
 
-    /* Electric blue primary */
-    --primary: 222 100% 59%;
-    --primary-hover: 222 100% 55%;
-    --primary-pressed: 222 100% 50%;
+    /* Primary - soft blue */
+    --primary: 220 70% 55%;
+    --primary-hover: 220 70% 50%;
+    --primary-pressed: 220 70% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 50% 96%;
+    --secondary: 35 15% 90%;
     --secondary-foreground: 0 0% 15%;
 
-    --muted: 35 30% 92%;
-    --muted-foreground: 0 0% 29%;
+    --muted: 35 12% 88%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Neon accents */
-    --neon-pink: 322 100% 59%;
-    --neon-lime: 110 100% 54%;
-    --neon-cyan: 187 100% 45%;
-    --neon-orange: 33 100% 50%;
-    --neon-yellow: 54 100% 62%;
-    --neon-purple: 255 100% 65%;
+    /* Cyberpunk neon accents - used sparingly */
+    --accent-cyan: 187 100% 50%;
+    --accent-purple: 265 100% 65%;
+    --accent-pink: 320 100% 60%;
 
-    /* Legacy accent (maps to neon-pink) */
-    --accent: 322 100% 59%;
-    --accent-foreground: 0 0% 100%;
+    /* Legacy accent (maps to cyan) */
+    --accent: 187 100% 50%;
+    --accent-foreground: 0 0% 8%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Strong black border for neo-pop */
-    --border: 0 0% 8%;
-    --border-soft: 0 0% 8% / 0.14;
-    --input: 0 0% 8%;
-    --ring: 187 100% 45%;
+    /* Subtle borders for neumorphism */
+    --border: 35 10% 82%;
+    --border-soft: 35 10% 85%;
+    --input: 35 10% 82%;
+    --ring: 187 100% 50%;
 
     --radius: 0.875rem;
 
-    /* InkPad Neo-Pop specific */
-    --ink-surface: 35 100% 97%;
-    --ink-pen-default: 0 0% 7%;
-    --toolbar-bg: 0 0% 100%;
-    --toolbar-border: 0 0% 8%;
-    --status-bg: 35 50% 96%;
+    /* InkPad Neumorphic specific */
+    --ink-surface: 35 20% 95%;
+    --ink-pen-default: 0 0% 8%;
+    --toolbar-bg: 35 15% 93%;
+    --toolbar-border: 35 10% 85%;
+    --status-bg: 35 15% 90%;
     
-    /* Neo-Pop shadows - HARD, CRISP, NO BLUR */
-    --shadow-1: 2px 2px 0px rgba(18, 18, 18, 0.25);
-    --shadow-2: 4px 4px 0px rgba(18, 18, 18, 0.28);
-    --shadow-3: 6px 6px 0px rgba(18, 18, 18, 0.30);
-    --shadow-pop: 6px 6px 0 rgba(18, 18, 18, 0.28), 0 0 0 2px hsl(0 0% 8%);
+    /* Neumorphic shadows - soft, diffused */
+    --shadow-out-light: -6px -6px 12px rgba(255, 255, 255, 0.8);
+    --shadow-out-dark: 6px 6px 12px rgba(0, 0, 0, 0.08);
+    --shadow-in-light: inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+    --shadow-in-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.06);
+    
+    /* Combined neumorphic shadows */
+    --shadow-neu-raised: var(--shadow-out-light), var(--shadow-out-dark);
+    --shadow-neu-pressed: var(--shadow-in-light), var(--shadow-in-dark);
+    --shadow-neu-flat: 0 0 0 transparent;
 
-    /* Border tokens */
-    --stroke-1: 1px;
-    --stroke-2: 2px;
-    --stroke-3: 3px;
+    /* Cyberpunk glow effects */
+    --glow-cyan: 0 0 0 2px hsl(187 100% 50% / 0.4), 0 0 20px hsl(187 100% 50% / 0.25);
+    --glow-purple: 0 0 0 2px hsl(265 100% 65% / 0.4), 0 0 20px hsl(265 100% 65% / 0.2);
+    --glow-pink: 0 0 0 2px hsl(320 100% 60% / 0.4), 0 0 20px hsl(320 100% 60% / 0.2);
 
     /* Radius tokens */
     --r-sm: 10px;
     --r-md: 14px;
     --r-lg: 18px;
-    --r-xl: 24px;
+    --r-xl: 22px;
     --r-pill: 999px;
 
     /* Focus */
-    --focus-ring: 3px solid hsl(187 100% 45%);
+    --focus-ring: 0 0 0 3px hsl(187 100% 50% / 0.5);
     --focus-offset: 2px;
 
     /* Selection */
-    --selection-bg: 222 100% 59% / 0.25;
+    --selection-bg: 220 70% 55% / 0.2;
     
     /* Typography */
     --font-sans: 'Inter', system-ui, sans-serif;
@@ -99,120 +101,126 @@
   }
 
   .dark {
-    /* Neo-Pop Dark theme */
-    --background: 220 20% 8%;
-    --foreground: 220 10% 95%;
+    /* Neumorphic Dark theme */
+    --background: 220 15% 12%;
+    --foreground: 220 10% 92%;
 
-    --card: 220 20% 12%;
-    --card-foreground: 220 10% 95%;
+    --card: 220 15% 15%;
+    --card-foreground: 220 10% 92%;
 
-    --popover: 220 20% 12%;
-    --popover-foreground: 220 10% 95%;
+    --popover: 220 15% 14%;
+    --popover-foreground: 220 10% 92%;
 
-    --surface: 220 20% 12%;
-    --surface-2: 220 20% 16%;
+    --surface: 220 15% 15%;
+    --surface-2: 220 15% 18%;
 
-    --primary: 222 100% 65%;
-    --primary-hover: 222 100% 60%;
-    --primary-pressed: 222 100% 55%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 220 80% 60%;
+    --primary-hover: 220 80% 55%;
+    --primary-pressed: 220 80% 50%;
+    --primary-foreground: 220 15% 10%;
 
-    --secondary: 220 20% 16%;
-    --secondary-foreground: 220 10% 90%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 10% 85%;
 
-    --muted: 220 20% 18%;
+    --muted: 220 12% 22%;
     --muted-foreground: 220 10% 55%;
 
-    --neon-pink: 322 100% 65%;
-    --neon-lime: 110 100% 58%;
-    --neon-cyan: 187 100% 50%;
-    --neon-orange: 33 100% 55%;
-    --neon-yellow: 54 100% 65%;
-    --neon-purple: 255 100% 70%;
+    /* Cyberpunk accents glow brighter in dark */
+    --accent-cyan: 187 100% 55%;
+    --accent-purple: 265 100% 70%;
+    --accent-pink: 320 100% 65%;
 
-    --accent: 322 100% 65%;
-    --accent-foreground: 220 20% 8%;
+    --accent: 187 100% 55%;
+    --accent-foreground: 220 15% 10%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Softer border in dark mode but still visible */
-    --border: 220 10% 30%;
-    --border-soft: 220 10% 95% / 0.12;
-    --input: 220 10% 30%;
-    --ring: 187 100% 50%;
+    --border: 220 12% 25%;
+    --border-soft: 220 12% 22%;
+    --input: 220 12% 25%;
+    --ring: 187 100% 55%;
 
     /* InkPad specific */
-    --ink-surface: 220 20% 8%;
-    --ink-pen-default: 220 10% 90%;
-    --toolbar-bg: 220 20% 12%;
-    --toolbar-border: 220 10% 30%;
-    --status-bg: 220 20% 16%;
+    --ink-surface: 220 15% 12%;
+    --ink-pen-default: 220 10% 88%;
+    --toolbar-bg: 220 15% 15%;
+    --toolbar-border: 220 12% 22%;
+    --status-bg: 220 15% 18%;
     
-    --shadow-1: 2px 2px 0px rgba(0, 0, 0, 0.4);
-    --shadow-2: 4px 4px 0px rgba(0, 0, 0, 0.45);
-    --shadow-3: 6px 6px 0px rgba(0, 0, 0, 0.5);
-    --shadow-pop: 6px 6px 0 rgba(0, 0, 0, 0.5), 0 0 0 2px hsl(220 10% 30%);
+    /* Dark neumorphic shadows */
+    --shadow-out-light: -6px -6px 12px rgba(255, 255, 255, 0.03);
+    --shadow-out-dark: 6px 6px 12px rgba(0, 0, 0, 0.4);
+    --shadow-in-light: inset -4px -4px 8px rgba(255, 255, 255, 0.02);
+    --shadow-in-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.3);
 
-    --selection-bg: 222 100% 65% / 0.25;
+    /* Stronger glow in dark mode */
+    --glow-cyan: 0 0 0 2px hsl(187 100% 55% / 0.5), 0 0 25px hsl(187 100% 55% / 0.35);
+    --glow-purple: 0 0 0 2px hsl(265 100% 70% / 0.5), 0 0 25px hsl(265 100% 70% / 0.3);
+    --glow-pink: 0 0 0 2px hsl(320 100% 65% / 0.5), 0 0 25px hsl(320 100% 65% / 0.3);
+
+    --selection-bg: 220 80% 60% / 0.25;
   }
 
   .nightlight {
-    /* Neo-Pop Nightlight theme - warm sepia */
-    --background: 30 30% 10%;
-    --foreground: 35 30% 90%;
+    /* Neumorphic Nightlight theme - warm sepia */
+    --background: 30 20% 14%;
+    --foreground: 35 20% 88%;
 
-    --card: 30 25% 14%;
-    --card-foreground: 35 30% 90%;
+    --card: 30 18% 17%;
+    --card-foreground: 35 20% 88%;
 
-    --popover: 30 25% 14%;
-    --popover-foreground: 35 30% 90%;
+    --popover: 30 18% 16%;
+    --popover-foreground: 35 20% 88%;
 
-    --surface: 30 25% 14%;
-    --surface-2: 30 25% 18%;
+    --surface: 30 18% 17%;
+    --surface-2: 30 18% 20%;
 
-    --primary: 35 95% 55%;
-    --primary-hover: 35 95% 50%;
-    --primary-pressed: 35 95% 45%;
-    --primary-foreground: 30 25% 8%;
+    --primary: 35 85% 55%;
+    --primary-hover: 35 85% 50%;
+    --primary-pressed: 35 85% 45%;
+    --primary-foreground: 30 20% 10%;
 
-    --secondary: 30 20% 18%;
-    --secondary-foreground: 35 25% 85%;
+    --secondary: 30 15% 20%;
+    --secondary-foreground: 35 18% 82%;
 
-    --muted: 30 20% 20%;
-    --muted-foreground: 35 20% 55%;
+    --muted: 30 12% 24%;
+    --muted-foreground: 35 15% 55%;
 
-    --neon-pink: 15 90% 60%;
-    --neon-lime: 50 90% 55%;
-    --neon-cyan: 35 100% 60%;
-    --neon-orange: 25 100% 55%;
-    --neon-yellow: 45 100% 65%;
-    --neon-purple: 20 80% 60%;
+    /* Warm cyberpunk accents for nightlight */
+    --accent-cyan: 35 100% 60%;
+    --accent-purple: 15 90% 60%;
+    --accent-pink: 25 100% 55%;
 
-    --accent: 15 85% 55%;
-    --accent-foreground: 30 25% 8%;
+    --accent: 35 100% 60%;
+    --accent-foreground: 30 20% 10%;
 
     --destructive: 15 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 20% 28%;
-    --border-soft: 35 30% 90% / 0.12;
-    --input: 30 20% 28%;
+    --border: 30 15% 28%;
+    --border-soft: 30 12% 25%;
+    --input: 30 15% 28%;
     --ring: 35 100% 60%;
 
     /* InkPad specific */
-    --ink-surface: 30 30% 10%;
-    --ink-pen-default: 35 30% 85%;
-    --toolbar-bg: 30 25% 14%;
-    --toolbar-border: 30 20% 28%;
-    --status-bg: 30 20% 18%;
+    --ink-surface: 30 20% 14%;
+    --ink-pen-default: 35 18% 85%;
+    --toolbar-bg: 30 18% 17%;
+    --toolbar-border: 30 15% 25%;
+    --status-bg: 30 15% 20%;
     
-    --shadow-1: 2px 2px 0px rgba(0, 0, 0, 0.35);
-    --shadow-2: 4px 4px 0px rgba(0, 0, 0, 0.4);
-    --shadow-3: 6px 6px 0px rgba(0, 0, 0, 0.45);
-    --shadow-pop: 6px 6px 0 rgba(0, 0, 0, 0.45), 0 0 0 2px hsl(30 20% 28%);
+    /* Warm neumorphic shadows */
+    --shadow-out-light: -6px -6px 12px rgba(255, 240, 220, 0.04);
+    --shadow-out-dark: 6px 6px 12px rgba(0, 0, 0, 0.35);
+    --shadow-in-light: inset -4px -4px 8px rgba(255, 240, 220, 0.03);
+    --shadow-in-dark: inset 4px 4px 8px rgba(0, 0, 0, 0.25);
 
-    --selection-bg: 35 95% 55% / 0.25;
+    --glow-cyan: 0 0 0 2px hsl(35 100% 60% / 0.5), 0 0 22px hsl(35 100% 60% / 0.3);
+    --glow-purple: 0 0 0 2px hsl(15 90% 60% / 0.5), 0 0 22px hsl(15 90% 60% / 0.25);
+    --glow-pink: 0 0 0 2px hsl(25 100% 55% / 0.5), 0 0 22px hsl(25 100% 55% / 0.25);
+
+    --selection-bg: 35 85% 55% / 0.25;
   }
 }
 
@@ -242,13 +250,13 @@
   /* Masthead wrapper - controls visibility transitions */
   .masthead-wrapper {
     @apply relative z-20 pt-4;
-    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.2, 1), 
-                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: opacity 200ms cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .masthead-wrapper.collapsed {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-12px) scale(0.98);
     pointer-events: none;
   }
 
@@ -258,8 +266,8 @@
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
-    transition: opacity 180ms cubic-bezier(0.2, 0.8, 0.2, 1), 
-                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: opacity 200ms cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .masthead-collapsed-wrapper.visible {
@@ -293,7 +301,7 @@
     font-weight: 800;
     letter-spacing: -0.02em;
     @apply bg-transparent text-center outline-none;
-    border-bottom: 3px solid hsl(var(--border));
+    border-bottom: 2px solid hsl(var(--border));
     @apply transition-colors duration-200;
     min-width: 200px;
   }
@@ -309,21 +317,23 @@
   }
 
   .masthead-rule {
-    @apply mt-4 w-32 h-0.5 bg-border;
+    @apply mt-4 w-24;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+    border-radius: 1px;
   }
 
   .masthead-meta {
     @apply mt-3 text-xs text-muted-foreground font-medium;
   }
 
-  /* Masthead collapsed state - sticky top-left */
+  /* Masthead collapsed state - neumorphic pill */
   .masthead-collapsed {
     @apply flex items-center;
     background: hsl(var(--toolbar-bg));
-    border: 2px solid hsl(var(--toolbar-border));
-    border-radius: var(--r-lg);
-    box-shadow: var(--shadow-2);
-    padding: 8px 16px;
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-neu-raised);
+    padding: 10px 18px;
     max-width: calc(100vw - 320px);
   }
 
@@ -332,7 +342,7 @@
     font-weight: 700;
     letter-spacing: -0.01em;
     @apply text-foreground cursor-text;
-    @apply transition-colors duration-150;
+    @apply transition-all duration-150;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -405,29 +415,29 @@
     @apply absolute top-0 bottom-0 z-10;
     left: 50%;
     transform: translateX(-50%);
-    width: 2px;
+    width: 1px;
     pointer-events: none;
     background: linear-gradient(
-      to right,
-      transparent,
-      hsl(var(--border-soft)),
-      hsl(var(--border) / 0.08),
-      hsl(var(--border-soft)),
-      transparent
+      to bottom,
+      transparent 0%,
+      hsl(var(--border) / 0.3) 10%,
+      hsl(var(--border) / 0.15) 50%,
+      hsl(var(--border) / 0.3) 90%,
+      transparent 100%
     );
   }
 
   .paper-crease::before {
     content: '';
     @apply absolute inset-0;
-    width: 12px;
-    left: -5px;
+    width: 8px;
+    left: -4px;
     background: linear-gradient(
       to right,
       transparent,
-      hsl(var(--foreground) / 0.02) 30%,
-      hsl(var(--foreground) / 0.04) 50%,
-      hsl(var(--foreground) / 0.02) 70%,
+      hsl(var(--foreground) / 0.01) 40%,
+      hsl(var(--foreground) / 0.02) 50%,
+      hsl(var(--foreground) / 0.01) 60%,
       transparent
     );
   }
@@ -453,16 +463,15 @@
     border: 1px solid hsl(var(--border) / 0.3);
   }
 
-  /* Export dropdown */
+  /* Export dropdown - neumorphic */
   .export-dropdown {
     @apply absolute z-50;
     top: calc(100% + 8px);
     right: 0;
     min-width: 200px;
     background: hsl(var(--popover));
-    border: 2px solid hsl(var(--border));
-    border-radius: var(--r-md);
-    box-shadow: var(--shadow-pop);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-neu-raised), 0 8px 24px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     animation: dropdown-in 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -486,15 +495,15 @@
   .export-dropdown-item {
     @apply flex items-center gap-3 w-full px-4 py-3;
     @apply text-sm text-foreground font-medium;
-    @apply transition-colors duration-100;
+    @apply transition-all duration-100;
   }
 
   .export-dropdown-item:hover {
-    background: hsl(var(--primary) / 0.12);
+    background: hsl(var(--muted) / 0.5);
   }
 
   .export-dropdown-item:focus {
-    background: hsl(var(--primary) / 0.12);
+    background: hsl(var(--muted) / 0.5);
     outline: none;
   }
 
@@ -559,20 +568,20 @@
 
   .inkpad-preview blockquote {
     @apply pl-4 italic my-4 text-muted-foreground;
-    border-left: 3px solid hsl(var(--primary));
+    border-left: 2px solid hsl(var(--primary) / 0.5);
   }
 
   .inkpad-preview code {
     @apply px-1.5 py-0.5 text-sm font-mono;
-    background: hsl(var(--surface-2));
+    background: hsl(var(--muted) / 0.5);
     border-radius: var(--r-sm);
   }
 
   .inkpad-preview pre {
     @apply p-4 overflow-x-auto my-4;
     background: hsl(var(--surface-2));
-    border: 2px solid hsl(var(--border));
-    border-radius: var(--r-md);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-neu-pressed);
   }
 
   .inkpad-preview pre code {
@@ -586,13 +595,12 @@
 
   .inkpad-preview hr {
     @apply my-8;
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--border) / 0.5);
   }
 
   .inkpad-preview img {
     @apply max-w-full my-4;
-    border-radius: var(--r-md);
-    border: 2px solid hsl(var(--border));
+    border-radius: var(--r-lg);
   }
 
   .inkpad-preview input[type="checkbox"] {
@@ -600,12 +608,11 @@
     accent-color: hsl(var(--primary));
   }
 
-  /* Slash menu - neo-pop sticker style */
+  /* Slash menu - neumorphic style */
   .slash-menu {
     @apply bg-popover overflow-hidden;
-    border: 2px solid hsl(var(--border));
-    border-radius: var(--r-lg);
-    box-shadow: var(--shadow-pop);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-neu-raised), 0 12px 32px rgba(0, 0, 0, 0.15);
     min-width: 240px;
   }
 
@@ -616,7 +623,7 @@
 
   .slash-menu-item:hover,
   .slash-menu-item.active {
-    background: hsl(var(--primary) / 0.12);
+    background: hsl(var(--muted) / 0.5);
   }
 
   .slash-menu-item .icon {
@@ -631,51 +638,50 @@
     @apply text-xs text-muted-foreground ml-auto font-medium;
   }
 
-  /* Neo-Pop Bottom Dock - sticker style */
+  /* Neumorphic Bottom Dock */
   .docked-toolbar {
     @apply fixed bottom-5 left-1/2 -translate-x-1/2 z-50;
     @apply flex items-center gap-2 p-3;
     background: hsl(var(--toolbar-bg));
-    border: 3px solid hsl(var(--toolbar-border));
     border-radius: var(--r-xl);
-    box-shadow: var(--shadow-3);
+    box-shadow: var(--shadow-neu-raised);
   }
 
   .toolbar-btn {
-    @apply w-12 h-12 flex items-center justify-center;
+    @apply w-11 h-11 flex items-center justify-center;
     @apply text-muted-foreground;
     background: hsl(var(--surface));
-    border: 2px solid transparent;
+    border: none;
     border-radius: var(--r-md);
-    box-shadow: var(--shadow-1);
-    @apply transition-all duration-100 ease-out;
+    box-shadow: var(--shadow-neu-raised);
+    @apply transition-all duration-150 ease-out;
   }
 
   .toolbar-btn:hover {
     @apply text-foreground;
-    transform: translate(-1px, -1px);
-    box-shadow: var(--shadow-2);
+    box-shadow: var(--shadow-neu-raised);
+    transform: translateY(-1px);
   }
 
   .toolbar-btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0px rgba(18, 18, 18, 0.2);
+    box-shadow: var(--shadow-neu-pressed);
+    transform: translateY(0);
   }
 
+  /* Active state with cyberpunk glow */
   .toolbar-btn.active {
-    @apply text-primary-foreground;
-    background: hsl(var(--primary));
-    border-color: hsl(var(--border));
-    box-shadow: var(--shadow-1);
+    @apply text-foreground;
+    background: hsl(var(--surface-2));
+    box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
   .toolbar-btn.active:hover {
-    background: hsl(var(--primary-hover));
+    box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
   .toolbar-btn:focus-visible {
-    outline: 3px solid hsl(var(--neon-cyan));
-    outline-offset: 2px;
+    box-shadow: var(--focus-ring);
+    outline: none;
   }
 
   .toolbar-btn:disabled {
@@ -684,110 +690,111 @@
 
   .toolbar-btn:disabled:hover {
     transform: none;
-    box-shadow: var(--shadow-1);
+    box-shadow: var(--shadow-neu-raised);
   }
 
   .toolbar-divider {
-    @apply h-8 mx-2;
-    width: 2px;
-    background: hsl(var(--border));
+    @apply h-7 mx-2;
+    width: 1px;
+    background: hsl(var(--border) / 0.5);
     border-radius: 1px;
   }
 
   .color-chip {
-    @apply w-8 h-8 cursor-pointer;
+    @apply w-7 h-7 cursor-pointer;
     border-radius: 50%;
-    border: 2px solid hsl(var(--border));
-    box-shadow: var(--shadow-1);
-    @apply transition-all duration-100 ease-out;
+    border: none;
+    box-shadow: var(--shadow-neu-raised);
+    @apply transition-all duration-150 ease-out;
   }
 
   .color-chip:hover {
-    transform: translate(-1px, -1px) scale(1.1);
-    box-shadow: var(--shadow-2);
+    transform: scale(1.1);
   }
 
   .color-chip:active {
-    transform: translate(0, 0) scale(1.05);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-neu-pressed);
   }
 
   .color-chip.active {
-    border-width: 3px;
-    box-shadow: var(--shadow-2);
-    transform: scale(1.1);
+    box-shadow: var(--glow-cyan);
+    transform: scale(1.15);
   }
 
   .size-btn {
     @apply px-3 py-2 text-xs font-bold;
     @apply text-muted-foreground;
     background: hsl(var(--surface));
-    border: 2px solid transparent;
+    border: none;
     border-radius: var(--r-sm);
-    @apply transition-all duration-100;
+    box-shadow: var(--shadow-neu-raised);
+    @apply transition-all duration-150;
   }
 
   .size-btn:hover {
     @apply text-foreground;
-    background: hsl(var(--surface-2));
+    transform: translateY(-1px);
+  }
+
+  .size-btn:active {
+    box-shadow: var(--shadow-neu-pressed);
+    transform: translateY(0);
   }
 
   .size-btn.active {
-    background: hsl(var(--primary) / 0.15);
-    color: hsl(var(--primary));
-    border-color: hsl(var(--primary) / 0.3);
+    @apply text-foreground;
+    box-shadow: var(--shadow-neu-pressed), var(--glow-purple);
   }
 
-  /* Neo-Pop Top-right dock - sticker style */
+  /* Neumorphic Top-right dock */
   .top-right-dock {
     @apply fixed top-4 right-4 z-50;
     @apply flex items-center gap-1.5 p-2;
     background: hsl(var(--toolbar-bg));
-    border: 3px solid hsl(var(--toolbar-border));
     border-radius: var(--r-xl);
-    box-shadow: var(--shadow-2);
+    box-shadow: var(--shadow-neu-raised);
   }
 
   .dock-btn {
     @apply w-10 h-10 flex items-center justify-center;
     @apply text-muted-foreground;
     background: hsl(var(--surface));
-    border: 2px solid transparent;
+    border: none;
     border-radius: var(--r-md);
-    box-shadow: var(--shadow-1);
-    @apply transition-all duration-100 ease-out;
+    box-shadow: var(--shadow-neu-raised);
+    @apply transition-all duration-150 ease-out;
   }
 
   .dock-btn:hover {
     @apply text-foreground;
-    transform: translate(-1px, -1px);
-    box-shadow: var(--shadow-2);
+    transform: translateY(-1px);
   }
 
   .dock-btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0px rgba(18, 18, 18, 0.2);
+    box-shadow: var(--shadow-neu-pressed);
+    transform: translateY(0);
   }
 
   .dock-btn.active {
-    @apply text-primary-foreground;
-    background: hsl(var(--primary));
-    border-color: hsl(var(--border));
-    box-shadow: var(--shadow-1);
+    @apply text-foreground;
+    background: hsl(var(--surface-2));
+    box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
   .dock-btn.active:hover {
-    background: hsl(var(--primary-hover));
+    box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 
   .dock-btn:focus-visible {
-    outline: 3px solid hsl(var(--neon-cyan));
-    outline-offset: 2px;
+    box-shadow: var(--focus-ring);
+    outline: none;
   }
 
   .dock-divider {
     @apply h-7 mx-1;
-    width: 2px;
-    background: hsl(var(--border));
+    width: 1px;
+    background: hsl(var(--border) / 0.4);
     border-radius: 1px;
   }
 }
@@ -817,19 +824,19 @@
     background-color: hsl(var(--surface-2));
   }
 
-  /* Modern Pen cursor - minimal stylus nib */
+  /* Modern Pen cursor */
   .cursor-pen {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 21L4.5 15.5L17 3L21 7L8.5 19.5L3 21Z' fill='white' stroke='%23121212' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M14 6L18 10' stroke='%23121212' stroke-width='2'/%3E%3Cpath d='M17 3L21 7' stroke='%232F6BFF' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='3' cy='21' r='1.5' fill='%232F6BFF'/%3E%3C/svg%3E") 1 23, crosshair;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 21L4.5 15.5L17 3L21 7L8.5 19.5L3 21Z' fill='white' stroke='%23333' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M14 6L18 10' stroke='%23333' stroke-width='1.5'/%3E%3Cpath d='M17 3L21 7' stroke='%2300E5FF' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='3' cy='21' r='1.5' fill='%2300E5FF'/%3E%3C/svg%3E") 1 23, crosshair;
   }
 
-  /* Modern Highlighter cursor - chisel marker */
+  /* Modern Highlighter cursor */
   .cursor-highlighter {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Crect x='2' y='14' width='16' height='6' rx='1' transform='rotate(-45 2 14)' fill='%23FFEB3B' fill-opacity='0.9' stroke='%23121212' stroke-width='2'/%3E%3Crect x='14' y='2' width='6' height='10' rx='1' transform='rotate(45 14 2)' fill='%23FF8A00' stroke='%23121212' stroke-width='2'/%3E%3Ccircle cx='2' cy='22' r='1.5' fill='%23FF8A00'/%3E%3C/svg%3E") 1 23, crosshair;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Crect x='2' y='14' width='16' height='6' rx='1' transform='rotate(-45 2 14)' fill='%23FFEB3B' fill-opacity='0.9' stroke='%23333' stroke-width='1.5'/%3E%3Crect x='14' y='2' width='6' height='10' rx='1' transform='rotate(45 14 2)' fill='%23FF8A00' stroke='%23333' stroke-width='1.5'/%3E%3Ccircle cx='2' cy='22' r='1.5' fill='%23FF8A00'/%3E%3C/svg%3E") 1 23, crosshair;
   }
 
-  /* Modern Eraser cursor - block eraser */
+  /* Modern Eraser cursor */
   .cursor-eraser {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Crect x='4' y='10' width='14' height='10' rx='2' transform='rotate(-30 4 10)' fill='white' stroke='%23121212' stroke-width='2'/%3E%3Crect x='4' y='10' width='14' height='4' rx='1' transform='rotate(-30 4 10)' fill='%23FF2DAA' stroke='%23121212' stroke-width='1.5'/%3E%3Ccircle cx='3' cy='21' r='1.5' fill='%23FF2DAA'/%3E%3C/svg%3E") 2 22, crosshair;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Crect x='4' y='10' width='14' height='10' rx='2' transform='rotate(-30 4 10)' fill='white' stroke='%23333' stroke-width='1.5'/%3E%3Crect x='4' y='10' width='14' height='4' rx='1' transform='rotate(-30 4 10)' fill='%23FF2DAA' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='3' cy='21' r='1.5' fill='%23FF2DAA'/%3E%3C/svg%3E") 2 22, crosshair;
   }
 
   .scrollbar-thin {
@@ -857,37 +864,32 @@
     background-color: hsl(var(--muted-foreground));
   }
 
-  /* Paper texture overlay - very subtle */
-  .paper-texture {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
-  }
-
-  /* Neo-pop button utility */
-  .neo-btn {
+  /* Neumorphic button utility */
+  .neu-btn {
     @apply font-semibold;
     background: hsl(var(--surface));
-    border: 2px solid hsl(var(--border));
+    border: none;
     border-radius: var(--r-md);
-    box-shadow: var(--shadow-1);
-    @apply transition-all duration-100;
+    box-shadow: var(--shadow-neu-raised);
+    @apply transition-all duration-150;
   }
 
-  .neo-btn:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: var(--shadow-2);
+  .neu-btn:hover {
+    transform: translateY(-1px);
   }
 
-  .neo-btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0px rgba(18, 18, 18, 0.2);
+  .neu-btn:active {
+    box-shadow: var(--shadow-neu-pressed);
+    transform: translateY(0);
   }
 
-  .neo-btn-primary {
+  .neu-btn-primary {
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
   }
 
-  .neo-btn-primary:hover {
-    background: hsl(var(--primary-hover));
+  .neu-btn-primary.active,
+  .neu-btn-primary:active {
+    box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
 }
