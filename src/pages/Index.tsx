@@ -3,11 +3,13 @@ import { useNote } from '@/hooks/useNote';
 import { useDrawing } from '@/hooks/useDrawing';
 import { useMastheadCollapse } from '@/hooks/useMastheadCollapse';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
-import { RichTextEditor } from '@/components/RichTextEditor';
+import { MarkdownPreview } from '@/components/MarkdownPreview';
+import { NormalEditor } from '@/components/NormalEditor';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
 import { DrawingToolbar } from '@/components/DrawingToolbar';
 import { ViewThemeDock } from '@/components/ViewThemeDock';
 import { NoteTitle } from '@/components/NoteTitle';
+import { ModePicker } from '@/components/ModePicker';
 import { DrawingStroke } from '@/lib/storage';
 import { exportToPdf } from '@/lib/pdfExport';
 
@@ -16,10 +18,13 @@ const Index = () => {
     note,
     isLoading,
     saveStatus,
+    showModePicker,
+    appSettings,
     updateContent,
     updateTitle,
     updateTheme,
     updateLayout,
+    updateEditorMode,
     addStroke,
     removeStroke,
     undoStroke,
@@ -27,6 +32,8 @@ const Index = () => {
     exportNote,
     importNote,
     createNew,
+    selectMode,
+    continueSession,
   } = useNote();
 
   const {
@@ -43,6 +50,7 @@ const Index = () => {
 
   const [redoStack, setRedoStack] = useState<DrawingStroke[]>([]);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const [modeChangeToast, setModeChangeToast] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const mainScrollRef = useRef<HTMLDivElement>(null);
   
@@ -63,9 +71,11 @@ const Index = () => {
     document.documentElement.classList.add(note.theme);
   }, [note?.theme]);
 
-  // Handle keyboard shortcuts for layout
+  // Handle keyboard shortcuts for layout (only in markdown mode)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!note || note.editorMode !== 'markdown') return;
+      
       // Escape returns to split view
       if (e.key === 'Escape' && note?.layout !== 'split') {
         updateLayout('split');
@@ -89,7 +99,7 @@ const Index = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [note?.layout, updateLayout]);
+  }, [note?.layout, note?.editorMode, updateLayout]);
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -145,7 +155,7 @@ const Index = () => {
 
   const handleNewNote = () => {
     if (window.confirm('Create a new note? Unsaved changes will be lost.')) {
-      createNew();
+      createNew(note?.editorMode);
       setRedoStack([]);
     }
   };
@@ -159,6 +169,11 @@ const Index = () => {
     });
   };
 
+  const handleModeChange = (mode: 'markdown' | 'normal') => {
+    if (!note) return;
+    updateEditorMode(mode);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -170,6 +185,18 @@ const Index = () => {
     );
   }
 
+  // Show mode picker on first launch or if no remembered preference
+  if (showModePicker) {
+    return (
+      <ModePicker
+        onSelectMode={selectMode}
+        hasExistingNote={!!note}
+        lastUsedMode={appSettings.lastUsedEditorMode}
+        onContinueSession={note ? continueSession : undefined}
+      />
+    );
+  }
+
   if (!note) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -178,8 +205,9 @@ const Index = () => {
     );
   }
 
-  const showEditor = note.layout === 'split' || note.layout === 'write';
-  const showPreview = note.layout === 'split' || note.layout === 'preview';
+  const isMarkdownMode = note.editorMode === 'markdown';
+  const showEditor = isMarkdownMode && (note.layout === 'split' || note.layout === 'write');
+  const showPreview = isMarkdownMode && (note.layout === 'split' || note.layout === 'preview');
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -204,6 +232,9 @@ const Index = () => {
         onLayoutChange={updateLayout}
         onExportMd={exportNote}
         onExportPdf={handleExportPdf}
+        editorMode={note.editorMode}
+        onEditorModeChange={handleModeChange}
+        showLayoutControls={isMarkdownMode}
       />
 
       {/* Main scrollable content */}
@@ -225,31 +256,55 @@ const Index = () => {
           />
         </header>
 
-        <div className="editor-layout">
-          {/* Editor pane */}
-          {showEditor && (
-            <div className={`editor-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
-              <MarkdownEditor
+        {/* Markdown Mode: Source + Preview panes */}
+        {isMarkdownMode && (
+          <div className="editor-layout">
+            {/* Editor pane */}
+            {showEditor && (
+              <div className={`editor-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
+                <MarkdownEditor
+                  content={note.content}
+                  onChange={updateContent}
+                  disabled={isDrawingMode}
+                />
+              </div>
+            )}
+
+            {/* Paper crease divider - only in split view */}
+            {note.layout === 'split' && <div className="paper-crease" />}
+
+            {/* Preview pane - READ-ONLY */}
+            {showPreview && (
+              <div className={`preview-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
+                <MarkdownPreview content={note.content} />
+                
+                {/* Drawing canvas overlays preview */}
+                <DrawingCanvas
+                  strokes={note.drawings}
+                  tool={tool}
+                  penColor={penColor}
+                  highlighterColor={highlighterColor}
+                  strokeSize={strokeSize}
+                  onAddStroke={handleAddStroke}
+                  onEraseStroke={handleEraseStroke}
+                  isDrawingMode={isDrawingMode}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Normal Mode: Full-width rich editor */}
+        {!isMarkdownMode && (
+          <div className="normal-editor-layout">
+            <div className="normal-editor-pane">
+              <NormalEditor
                 content={note.content}
                 onChange={updateContent}
                 disabled={isDrawingMode}
               />
-            </div>
-          )}
-
-          {/* Paper crease divider - only in split view */}
-          {note.layout === 'split' && <div className="paper-crease" />}
-
-          {/* Preview pane - now editable with RichTextEditor */}
-          {showPreview && (
-            <div className={`preview-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
-              <RichTextEditor 
-                content={note.content} 
-                onChange={updateContent}
-                disabled={isDrawingMode}
-              />
               
-              {/* Drawing canvas overlays preview */}
+              {/* Drawing canvas overlays editor */}
               <DrawingCanvas
                 strokes={note.drawings}
                 tool={tool}
@@ -261,8 +316,8 @@ const Index = () => {
                 isDrawingMode={isDrawingMode}
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
         
         {/* Minimal bottom padding - content flows freely */}
         <div className="h-8" />

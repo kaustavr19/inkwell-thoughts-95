@@ -1078,3 +1078,35 @@
     font-size: var(--text-lg);
   }
 }
+
+/* Mode Picker */
+.mode-picker-card {
+  @apply flex flex-col items-center text-center p-8 rounded-2xl transition-all duration-200;
+  background: hsl(var(--surface));
+  border: 1px solid hsl(var(--border));
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-picker-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.mode-picker-icon {
+  @apply w-16 h-16 rounded-xl flex items-center justify-center mb-4;
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+}
+
+/* Normal editor layout */
+.normal-editor-layout {
+  @apply w-full max-w-4xl mx-auto px-4;
+}
+
+.normal-editor-pane {
+  @apply relative min-h-[70vh];
+  background: hsl(var(--surface));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
