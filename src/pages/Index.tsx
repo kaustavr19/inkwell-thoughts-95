@@ -3,7 +3,7 @@ import { useNote } from '@/hooks/useNote';
 import { useDrawing } from '@/hooks/useDrawing';
 import { useMastheadCollapse } from '@/hooks/useMastheadCollapse';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
-import { MarkdownPreview } from '@/components/MarkdownPreview';
+import { RichTextEditor } from '@/components/RichTextEditor';
 import { DrawingCanvas } from '@/components/DrawingCanvas';
 import { DrawingToolbar } from '@/components/DrawingToolbar';
 import { ViewThemeDock } from '@/components/ViewThemeDock';
@@ -240,10 +240,14 @@ const Index = () => {
           {/* Paper crease divider - only in split view */}
           {note.layout === 'split' && <div className="paper-crease" />}
 
-          {/* Preview pane */}
+          {/* Preview pane - now editable with RichTextEditor */}
           {showPreview && (
             <div className={`preview-pane ${note.layout === 'split' ? 'split' : 'full'}`}>
-              <MarkdownPreview content={note.content} />
+              <RichTextEditor 
+                content={note.content} 
+                onChange={updateContent}
+                disabled={isDrawingMode}
+              />
               
               {/* Drawing canvas overlays preview */}
               <DrawingCanvas
