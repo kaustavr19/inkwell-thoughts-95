@@ -2,11 +2,15 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   NoteData,
   DrawingStroke,
+  EditorMode,
   saveNote,
   loadLatestNote,
   createNewNote,
   exportToMarkdown,
   importFromMarkdown,
+  saveAppSettings,
+  loadAppSettings,
+  AppSettings,
 } from '@/lib/storage';
 
 const AUTOSAVE_DELAY = 3000;
@@ -17,33 +21,49 @@ export function useNote() {
   const [note, setNote] = useState<NoteData | null>(null);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('saved');
   const [isLoading, setIsLoading] = useState(true);
+  const [appSettings, setAppSettings] = useState<AppSettings>({});
+  const [showModePicker, setShowModePicker] = useState(false);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastSavedRef = useRef<string>('');
 
-  // Load note on mount
+  // Load note and settings on mount
   useEffect(() => {
-    async function loadInitialNote() {
+    async function loadInitialData() {
       try {
-        const existingNote = await loadLatestNote();
+        const [existingNote, settings] = await Promise.all([
+          loadLatestNote(),
+          loadAppSettings(),
+        ]);
+        
+        setAppSettings(settings);
+        
         if (existingNote) {
-          setNote(existingNote);
-          lastSavedRef.current = JSON.stringify(existingNote);
+          // If user has "remember choice" enabled and a preferred mode, skip picker
+          if (settings.rememberModeChoice && settings.preferredEditorMode) {
+            setNote({
+              ...existingNote,
+              editorMode: settings.preferredEditorMode,
+            });
+            lastSavedRef.current = JSON.stringify(existingNote);
+          } else {
+            // Show mode picker
+            setNote(existingNote);
+            lastSavedRef.current = JSON.stringify(existingNote);
+            setShowModePicker(true);
+          }
         } else {
-          const newNote = createNewNote();
-          setNote(newNote);
-          await saveNote(newNote);
-          lastSavedRef.current = JSON.stringify(newNote);
+          // No existing note - show mode picker
+          setShowModePicker(true);
         }
       } catch (error) {
-        console.error('Failed to load note:', error);
-        const newNote = createNewNote();
-        setNote(newNote);
+        console.error('Failed to load data:', error);
+        setShowModePicker(true);
       } finally {
         setIsLoading(false);
       }
     }
 
-    loadInitialNote();
+    loadInitialData();
   }, []);
 
   // Autosave logic
@@ -218,13 +238,14 @@ export function useNote() {
   );
 
   // Create new note
-  const createNew = useCallback(async () => {
-    const newNote = createNewNote();
+  const createNew = useCallback(async (editorMode?: EditorMode) => {
+    const mode = editorMode || note?.editorMode || 'markdown';
+    const newNote = createNewNote(mode);
     setNote(newNote);
     await saveNote(newNote);
     lastSavedRef.current = JSON.stringify(newNote);
     setSaveStatus('saved');
-  }, []);
+  }, [note?.editorMode]);
 
   // Force save
   const forceSave = useCallback(async () => {
@@ -243,6 +264,57 @@ export function useNote() {
     }
   }, [note]);
 
+  // Update editor mode
+  const updateEditorMode = useCallback(
+    async (mode: EditorMode) => {
+      setNote((prev) => {
+        if (!prev) return prev;
+        const updated = { ...prev, editorMode: mode };
+        scheduleSave(updated);
+        return updated;
+      });
+      
+      // Update app settings
+      const newSettings = { ...appSettings, lastUsedEditorMode: mode };
+      setAppSettings(newSettings);
+      await saveAppSettings(newSettings);
+    },
+    [scheduleSave, appSettings]
+  );
+
+  // Select mode from picker
+  const selectMode = useCallback(
+    async (mode: EditorMode, remember: boolean) => {
+      const newSettings: AppSettings = {
+        ...appSettings,
+        lastUsedEditorMode: mode,
+        rememberModeChoice: remember,
+        preferredEditorMode: remember ? mode : undefined,
+      };
+      setAppSettings(newSettings);
+      await saveAppSettings(newSettings);
+
+      if (note) {
+        const updated = { ...note, editorMode: mode };
+        setNote(updated);
+        scheduleSave(updated);
+      } else {
+        const newNote = createNewNote(mode);
+        setNote(newNote);
+        await saveNote(newNote);
+        lastSavedRef.current = JSON.stringify(newNote);
+      }
+      
+      setShowModePicker(false);
+    },
+    [note, appSettings, scheduleSave]
+  );
+
+  // Continue last session
+  const continueSession = useCallback(() => {
+    setShowModePicker(false);
+  }, []);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -256,10 +328,13 @@ export function useNote() {
     note,
     isLoading,
     saveStatus,
+    showModePicker,
+    appSettings,
     updateContent,
     updateTitle,
     updateTheme,
     updateLayout,
+    updateEditorMode,
     updateDrawings,
     addStroke,
     removeStroke,
@@ -269,5 +344,7 @@ export function useNote() {
     importNote,
     createNew,
     forceSave,
+    selectMode,
+    continueSession,
   };
 }

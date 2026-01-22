@@ -1,5 +1,7 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
+export type EditorMode = 'markdown' | 'normal';
+
 export interface DrawingStroke {
   id: string;
   tool: 'pen' | 'highlighter';
@@ -15,8 +17,15 @@ export interface NoteData {
   drawings: DrawingStroke[];
   theme: 'light' | 'dark' | 'nightlight';
   layout: 'split' | 'write' | 'preview';
+  editorMode: EditorMode;
   updatedAt: string;
   createdAt: string;
+}
+
+export interface AppSettings {
+  preferredEditorMode?: EditorMode;
+  lastUsedEditorMode?: EditorMode;
+  rememberModeChoice?: boolean;
 }
 
 interface InkPadDB extends DBSchema {
@@ -35,11 +44,14 @@ let dbPromise: Promise<IDBPDatabase<InkPadDB>> | null = null;
 
 function getDB(): Promise<IDBPDatabase<InkPadDB>> {
   if (!dbPromise) {
-    dbPromise = openDB<InkPadDB>('inkpad-db', 1, {
-      upgrade(db) {
-        const noteStore = db.createObjectStore('notes', { keyPath: 'id' });
-        noteStore.createIndex('by-updated', 'updatedAt');
-        db.createObjectStore('settings');
+    dbPromise = openDB<InkPadDB>('inkpad-db', 2, {
+      upgrade(db, oldVersion) {
+        if (oldVersion < 1) {
+          const noteStore = db.createObjectStore('notes', { keyPath: 'id' });
+          noteStore.createIndex('by-updated', 'updatedAt');
+          db.createObjectStore('settings');
+        }
+        // Version 2: editorMode field added to notes - no schema change needed
       },
     });
   }
@@ -53,18 +65,33 @@ export async function saveNote(note: NoteData): Promise<void> {
 
 export async function loadNote(id: string): Promise<NoteData | undefined> {
   const db = await getDB();
-  return db.get('notes', id);
+  const note = await db.get('notes', id);
+  // Migrate old notes without editorMode
+  if (note && !note.editorMode) {
+    note.editorMode = 'markdown';
+  }
+  return note;
 }
 
 export async function loadLatestNote(): Promise<NoteData | undefined> {
   const db = await getDB();
   const notes = await db.getAllFromIndex('notes', 'by-updated');
-  return notes.length > 0 ? notes[notes.length - 1] : undefined;
+  const note = notes.length > 0 ? notes[notes.length - 1] : undefined;
+  // Migrate old notes without editorMode
+  if (note && !note.editorMode) {
+    note.editorMode = 'markdown';
+  }
+  return note;
 }
 
 export async function getAllNotes(): Promise<NoteData[]> {
   const db = await getDB();
-  return db.getAll('notes');
+  const notes = await db.getAll('notes');
+  // Migrate old notes without editorMode
+  return notes.map(note => ({
+    ...note,
+    editorMode: note.editorMode || 'markdown'
+  }));
 }
 
 export async function deleteNote(id: string): Promise<void> {
@@ -82,7 +109,16 @@ export async function loadSetting<T>(key: string): Promise<T | undefined> {
   return db.get('settings', key) as Promise<T | undefined>;
 }
 
-export function createNewNote(): NoteData {
+export async function saveAppSettings(settings: AppSettings): Promise<void> {
+  await saveSetting('appSettings', settings);
+}
+
+export async function loadAppSettings(): Promise<AppSettings> {
+  const settings = await loadSetting<AppSettings>('appSettings');
+  return settings || {};
+}
+
+export function createNewNote(editorMode: EditorMode = 'markdown'): NoteData {
   return {
     id: crypto.randomUUID(),
     title: 'Untitled',
@@ -90,6 +126,7 @@ export function createNewNote(): NoteData {
     drawings: [],
     theme: 'light',
     layout: 'split',
+    editorMode,
     updatedAt: new Date().toISOString(),
     createdAt: new Date().toISOString(),
   };
@@ -101,6 +138,7 @@ title: "${note.title.replace(/"/g, '\\"')}"
 updatedAt: "${note.updatedAt}"
 theme: "${note.theme}"
 layout: "${note.layout}"
+editorMode: "${note.editorMode}"
 ---
 
 `;
@@ -118,6 +156,7 @@ export function importFromMarkdown(markdown: string): Partial<NoteData> {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    editorMode: 'markdown',
   };
 
   // Parse frontmatter
@@ -128,11 +167,13 @@ export function importFromMarkdown(markdown: string): Partial<NoteData> {
     const themeMatch = frontmatter.match(/theme:\s*"([^"]*)"/);
     const layoutMatch = frontmatter.match(/layout:\s*"([^"]*)"/);
     const updatedMatch = frontmatter.match(/updatedAt:\s*"([^"]*)"/);
+    const editorModeMatch = frontmatter.match(/editorMode:\s*"([^"]*)"/);
 
     if (titleMatch) result.title = titleMatch[1];
     if (themeMatch) result.theme = themeMatch[1] as NoteData['theme'];
     if (layoutMatch) result.layout = layoutMatch[1] as NoteData['layout'];
     if (updatedMatch) result.updatedAt = updatedMatch[1];
+    if (editorModeMatch) result.editorMode = editorModeMatch[1] as EditorMode;
 
     markdown = markdown.slice(frontmatterMatch[0].length);
   }

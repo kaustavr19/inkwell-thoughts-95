@@ -7,8 +7,9 @@ import {
   PanelLeft,
   PanelRight,
 } from 'lucide-react';
-import { NoteData } from '@/lib/storage';
+import { NoteData, EditorMode } from '@/lib/storage';
 import { ExportDropdown } from './ExportDropdown';
+import { EditorModeSwitcher } from './EditorModeSwitcher';
 import {
   Tooltip,
   TooltipContent,
@@ -23,6 +24,9 @@ interface ViewThemeDockProps {
   onLayoutChange: (layout: NoteData['layout']) => void;
   onExportMd: () => void;
   onExportPdf: () => void;
+  editorMode: EditorMode;
+  onEditorModeChange: (mode: EditorMode) => void;
+  showLayoutControls?: boolean;
 }
 
 export function ViewThemeDock({
@@ -32,57 +36,72 @@ export function ViewThemeDock({
   onLayoutChange,
   onExportMd,
   onExportPdf,
+  editorMode,
+  onEditorModeChange,
+  showLayoutControls = true,
 }: ViewThemeDockProps) {
   return (
     <TooltipProvider delayDuration={200}>
       <div className="top-right-dock">
-        {/* Layout controls */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className={`dock-btn ${layout === 'write' ? 'active' : ''}`}
-              onClick={() => onLayoutChange('write')}
-              aria-pressed={layout === 'write'}
-            >
-              <PanelLeft className="w-4 h-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
-            Write View
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className={`dock-btn ${layout === 'split' ? 'active' : ''}`}
-              onClick={() => onLayoutChange('split')}
-              aria-pressed={layout === 'split'}
-            >
-              <Columns2 className="w-4 h-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
-            Split View
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className={`dock-btn ${layout === 'preview' ? 'active' : ''}`}
-              onClick={() => onLayoutChange('preview')}
-              aria-pressed={layout === 'preview'}
-            >
-              <PanelRight className="w-4 h-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
-            Preview View
-          </TooltipContent>
-        </Tooltip>
+        {/* Editor mode switcher */}
+        <EditorModeSwitcher
+          currentMode={editorMode}
+          onModeChange={onEditorModeChange}
+        />
 
         <div className="dock-divider" />
+
+        {/* Layout controls - only show in markdown mode */}
+        {showLayoutControls && (
+          <>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className={`dock-btn ${layout === 'write' ? 'active' : ''}`}
+                  onClick={() => onLayoutChange('write')}
+                  aria-pressed={layout === 'write'}
+                >
+                  <PanelLeft className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
+                Write View
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className={`dock-btn ${layout === 'split' ? 'active' : ''}`}
+                  onClick={() => onLayoutChange('split')}
+                  aria-pressed={layout === 'split'}
+                >
+                  <Columns2 className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
+                Split View
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className={`dock-btn ${layout === 'preview' ? 'active' : ''}`}
+                  onClick={() => onLayoutChange('preview')}
+                  aria-pressed={layout === 'preview'}
+                >
+                  <PanelRight className="w-4 h-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" sideOffset={8} className="text-xs font-medium">
+                Preview View
+              </TooltipContent>
+            </Tooltip>
+
+            <div className="dock-divider" />
+          </>
+        )}
 
         {/* Theme controls */}
         <Tooltip>
