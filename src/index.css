@@ -916,4 +916,165 @@
   .neu-btn-primary:active {
     box-shadow: var(--shadow-neu-pressed), var(--glow-cyan);
   }
+
+  /* Rich Text Editor Toolbar */
+  .rich-text-toolbar {
+    @apply flex items-center gap-1 p-2;
+    background: hsl(var(--dock-bg));
+    border-bottom: 1px solid hsl(var(--dock-border));
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .rich-toolbar-btn {
+    @apply w-8 h-8 flex items-center justify-center;
+    color: hsl(var(--dock-fg-muted));
+    background: transparent;
+    border: none;
+    border-radius: var(--r-sm);
+    @apply transition-all duration-150;
+  }
+
+  .rich-toolbar-btn:hover {
+    color: hsl(var(--dock-fg));
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .rich-toolbar-btn.active {
+    color: hsl(var(--primary));
+    background: hsl(var(--muted) / 0.7);
+  }
+
+  .rich-toolbar-btn:focus-visible {
+    box-shadow: var(--focus-ring);
+    outline: none;
+  }
+
+  /* Color picker popup */
+  .color-picker-popup {
+    @apply absolute top-full left-0 mt-2 p-2 flex gap-1.5 flex-wrap;
+    width: 130px;
+    background: hsl(var(--popover));
+    border: 1px solid hsl(var(--dock-border));
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-neu-raised), 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 50;
+    animation: dropdown-in 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .color-picker-chip {
+    @apply w-7 h-7 flex items-center justify-center;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    @apply transition-all duration-150;
+  }
+
+  .color-picker-chip:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px hsl(var(--foreground) / 0.2);
+  }
+
+  /* Table menu popup */
+  .table-menu-popup {
+    @apply absolute top-full left-0 mt-2 py-1;
+    min-width: 160px;
+    background: hsl(var(--popover));
+    border: 1px solid hsl(var(--dock-border));
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-neu-raised), 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 50;
+    animation: dropdown-in 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .table-menu-item {
+    @apply flex items-center gap-2 w-full px-3 py-2 text-sm;
+    color: hsl(var(--foreground));
+    @apply transition-colors duration-100;
+  }
+
+  .table-menu-item:hover {
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .table-menu-item.danger {
+    color: hsl(var(--destructive));
+  }
+
+  .table-menu-divider {
+    @apply my-1 mx-2;
+    height: 1px;
+    background: hsl(var(--border));
+  }
+
+  /* TipTap editor styles */
+  .tiptap-editor {
+    min-height: 300px;
+  }
+
+  .tiptap-editor:focus {
+    outline: none;
+  }
+
+  /* TipTap table styles */
+  .tiptap-table {
+    @apply border-collapse my-4 w-full;
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+
+  .tiptap-table th,
+  .tiptap-table td {
+    @apply border p-3 text-left;
+    border-color: hsl(var(--border));
+    min-width: 80px;
+  }
+
+  .tiptap-table th {
+    @apply font-semibold;
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .tiptap-table td {
+    background: hsl(var(--background));
+  }
+
+  .tiptap-table .selectedCell {
+    background: hsl(var(--primary) / 0.1);
+  }
+
+  /* TipTap task list styles */
+  .tiptap-editor ul[data-type="taskList"] {
+    @apply list-none pl-0 my-4;
+  }
+
+  .tiptap-editor ul[data-type="taskList"] li {
+    @apply flex items-start gap-2 my-1;
+  }
+
+  .tiptap-editor ul[data-type="taskList"] li label {
+    @apply flex items-center gap-2;
+  }
+
+  .tiptap-editor ul[data-type="taskList"] li input[type="checkbox"] {
+    @apply mt-1;
+    accent-color: hsl(var(--primary));
+  }
+
+  /* Highlight mark styles */
+  .tiptap-editor mark {
+    @apply rounded-sm px-0.5;
+  }
+
+  .highlight {
+    @apply rounded-sm px-0.5;
+  }
+
+  /* Placeholder for empty editor */
+  .tiptap-editor p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply float-left h-0 pointer-events-none;
+    color: hsl(var(--muted-foreground) / 0.5);
+    font-size: var(--text-lg);
+  }
 }
