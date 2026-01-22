@@ -1,5 +1,5 @@
 import TurndownService from 'turndown';
-
+import { parseMarkdown } from './markdown';
 // Initialize turndown for HTML -> Markdown conversion
 const turndown = new TurndownService({
   headingStyle: 'atx',
@@ -144,9 +144,6 @@ export function htmlToMarkdown(html: string): string {
  */
 export function markdownToHtml(markdown: string): string {
   if (!markdown) return '<p></p>';
-  
-  // Import parseMarkdown from existing lib
-  const { parseMarkdown } = require('./markdown');
   return parseMarkdown(markdown);
 }
 
